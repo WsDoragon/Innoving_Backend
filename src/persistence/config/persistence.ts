@@ -1,5 +1,7 @@
 import { Dialect, Sequelize } from 'sequelize'
-import UserModel from '../models/user.model'
+import UsuarioModel from '../models/gestion_usuarios/usuario.model'
+import RolModel from '../models/gestion_usuarios/rol.model'
+import RolUsuarioModel from '../models/gestion_usuarios/rol_usuario.model'
 import dotenv from 'dotenv'
 
 class Persistence {
@@ -11,7 +13,7 @@ class Persistence {
         dotenv.config();
         
         this.production = process.env.NODE_ENV === 'production'
-
+        console.log(process.env.DB_USER)
         this.persistence = new Sequelize(
             <string> process.env.DB_NAME,
             <string> process.env.DB_USER,
