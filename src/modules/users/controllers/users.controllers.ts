@@ -23,7 +23,7 @@ class UserController {
     public getUser(request: Request, response: Response) {
         console.log('getuser by id? '+ request.query.id);
         
-        UserRepository.findUser(request.query.id).then(user => {
+        UserRepository.findUser(Number(request.query.id)).then(user => {
             response.status(200).json({status: true, data: user});
         }, error => {
             response.status(404).json({status: false});
