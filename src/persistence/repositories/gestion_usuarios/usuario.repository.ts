@@ -54,6 +54,10 @@ class UsuarioRepository {
             "roles": []
         }
         const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${creds.password}"`, {type: persistence.QueryTypes.SELECT})
+        if(usuario[0].status == 0){
+            console.log("Usuario no habilitado");
+            return({message: "Usuario no habilitado"})
+        }
         if (usuario.length > 0){
             const roles = await persistence.query(`SELECT name from rol JOIN rol_usuario ON id = id_rol WHERE id_rut = "${creds.username}"`, {type: persistence.QueryTypes.SELECT})
             hehe.rut = `${creds.username}`;
