@@ -55,6 +55,14 @@ class UsuarioController {
             response.status(400).json({status: false});
         });
     }
+
+    public loginUsuario(request:Request, response:Response){
+        console.log("login: " + request.body);
+        UsuarioRepository.loginUsuarios(request.body).then(usuario => {
+            //console.log("loginCF: " + usuario)
+            response.status(201).json(usuario)
+        })
+    }
 }
 
 export default new UsuarioController();
