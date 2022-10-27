@@ -11,6 +11,7 @@ class UsuariosRoute {
         this.router.get('/', UsuarioController.getUsuarios);
         this.router.get('/search', UsuarioController.searchUsuarios);
         this.router.get('/:id', UsuarioController.getUsuario);
+        this.router.post('/login',UsuarioController.loginUsuario);
     }
 }
 

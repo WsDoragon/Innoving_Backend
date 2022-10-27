@@ -1,6 +1,8 @@
 import express, { Express, Request, Response, Router } from 'express';
 import dotenv from 'dotenv'
-import UserModule from './src/modules/users/users.module';
+import cors from 'cors'
+
+import usuariosModule from './src/modules/users/gestion_usuarios/usuarios.module';
 
 
 class App {
@@ -25,10 +27,12 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    this.server.use(cors());
   }
 
   routes() {
-    this.server.use(UserModule.routes);
+    //this.server.use(UserModule.routes);
+    this.server.use(usuariosModule.routes);
   }
 }
 
