@@ -78,7 +78,7 @@ CREATE TABLE `usuario` (
   `nombre` varchar(255) NOT NULL DEFAULT '0',
   `apellido` varchar(255) NOT NULL DEFAULT '0',
   `correo` varchar(255) NOT NULL DEFAULT '0',
-  `constraseña` varchar(30) NOT NULL DEFAULT '0',
+  `contraseña` varchar(30) NOT NULL DEFAULT '0',
   `state` tinyint(4) NOT NULL,
   PRIMARY KEY (`rut`),
   UNIQUE KEY `rut_UNIQUE` (`rut`)
