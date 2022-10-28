@@ -36,8 +36,8 @@ class UsuarioRepository {
         let Usuarios: Array<any> = await persistence.query('SELECT * FROM usuario WHERE nombre LIKE "%' + text + '%" OR apellido LIKE "%' + text + '%" GROUP BY rut', {
             model: UsuarioModel,
             mapToModel: true // pass true here if you have any mapped fields
-          });
-          
+            });
+        
         if (Usuarios.length == 0) {
             throw new Error();
         } else {
@@ -54,7 +54,7 @@ class UsuarioRepository {
             "roles": []
         }
         const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${creds.password}"`, {type: persistence.QueryTypes.SELECT})
-        if(usuario[0].status == 0){
+        if(usuario[0].status == 1){
             console.log("Usuario no habilitado");
             return({message: "Usuario no habilitado"})
         }
@@ -73,6 +73,26 @@ class UsuarioRepository {
             return ({message: "Rut/Contraseña no validos"})
         }
         
+    }
+
+    public async getAll(){
+        let json:any[] = [];
+        const result = await persistence.query(`SELECT * FROM usuario`, {type: persistence.QueryTypes.SELECT});
+
+        for (let i of result){
+        let rol = "-"
+        const roles = await persistence.query(`SELECT name FROM rol_usuario
+                                                JOIN rol ON id=id_rol
+                                                WHERE id_rut ="${i.rut}"`,
+                                                {type: persistence.QueryTypes.SELECT});
+        for(let j of roles){
+            rol = rol+j.name+"-";
+        }
+        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol};
+            
+            json.push(a);
+        }
+        return json;
     }
 }
 
