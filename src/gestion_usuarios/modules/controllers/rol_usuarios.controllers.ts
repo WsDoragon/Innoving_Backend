@@ -12,6 +12,22 @@ class RolUsuarioController {
             response.status(404).json({status: false});
         });
     }
+    
+    public addRolUsuarios(request: Request, response: Response) {
+        RolUsuarioRepository.addRolUsuario(request.body.rut, request.body.roles).then(Roles => {
+            response.status(200).json({status: true, data: Roles});
+        }, error => {
+            response.status(404).json({status: false});
+        });
+    }
+
+    public changeRolUsuarios(request: Request, response: Response) {
+        RolUsuarioRepository.changeRolUsuario(request.body.rut, request.body.roles).then(Roles => {
+            response.status(200).json({status: true, data: Roles});
+        }, error => {
+            response.status(404).json({status: false});
+        });
+    }
 
 }
 

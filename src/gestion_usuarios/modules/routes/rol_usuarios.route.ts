@@ -8,6 +8,8 @@ class RolUsuariosRoute {
     constructor() {
         this.router = Router();
         this.router.get('/', RolUsuarioController.getRolUsuarios);
+        this.router.post('/add', RolUsuarioController.addRolUsuarios);
+        this.router.post('/change', RolUsuarioController.changeRolUsuarios);
     }
 }
 
