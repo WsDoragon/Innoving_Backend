@@ -100,6 +100,22 @@ class UsuarioRepository {
         }
         return json;
     }
+
+public async desactivarUser(id: string){
+    let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "0" WHERE rut = "${id}"`
+        , {type: persistence.QueryTypes.UPDATE});
+    console.log(`Usuario deshabilitado: ${id}`)
+    return editUsuario;
+
+}
+
+public async activarUser(id: string){
+    let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "1" WHERE rut = "${id}"`
+        , {type: persistence.QueryTypes.UPDATE});
+    console.log(`Usuario deshabilitado: ${id}`)
+    return editUsuario;
+
+}
 }
 
 export default new UsuarioRepository();
