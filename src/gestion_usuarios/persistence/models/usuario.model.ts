@@ -9,7 +9,6 @@ class UsuarioModel extends Model<Usuario> {
 UsuarioModel.init({
     rut: {
       type: DataTypes.STRING,
-      autoIncrement: true,
       primaryKey: true,
     },
     nombre: {

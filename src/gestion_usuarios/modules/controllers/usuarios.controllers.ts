@@ -21,9 +21,8 @@ class UsuarioController {
     }
 
     public getUsuario(request: Request, response: Response) {
-        console.log('getUsuario by id? '+ request.query.id);
-        
-        UsuarioRepository.findUsuario(request.body.id).then(Usuario => {
+        let data: any = request.query.rut;
+        UsuarioRepository.findUsuario(data).then(Usuario => {
             response.status(200).json({status: true, data: Usuario});
         }, error => {
             response.status(404).json({status: false});
@@ -56,8 +55,10 @@ class UsuarioController {
     }
 
     public editUsuario(request: Request, response: Response){   
-        let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.correo, request.body.contraseña, request.body.status);
-        UsuarioRepository.editUsuario(usuario).then(usuarios => {
+        console.log(request.body.newInfo.roles);
+        let newInfo : any = request.body.newInfo;
+        let usuario = new Usuario(newInfo.rut, newInfo.nombre, newInfo.apellido, newInfo.correo, newInfo.contraseña, newInfo.status);
+        UsuarioRepository.editUsuario(request.body.id, usuario).then(usuarios => {
             response.status(201).json({status: true, data: usuarios});
         }, error => {
             response.status(400).json({status: false});
@@ -65,7 +66,7 @@ class UsuarioController {
     }
 
     public loginUsuario(request:Request, response:Response){
-        console.log("login: " + request.body);
+        console.log("login: " + Object.keys(request.body));
         UsuarioRepository.loginUsuarios(request.body).then(usuario => {
             //console.log("loginCF: " + usuario)
             response.status(201).json(usuario)

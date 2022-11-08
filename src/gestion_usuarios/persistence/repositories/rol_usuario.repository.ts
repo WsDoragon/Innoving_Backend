@@ -28,11 +28,12 @@ class RolUsuarioRepository {
 
 
     public async findRolUsuario(id: string): Promise<RolUsuario> {
-        let RolUsuario: any = await RolUsuarioModel.findByPk(id);
-        if (RolUsuario == null) {
+        let rolUsuario: any = await persistence.query(`SELECT * FROM rol_usuario WHERE id_rut = "${id}"`, {type: persistence.QueryTypes.SELECT});
+        console.log("findrolusuario: "+rolUsuario)
+        if (rolUsuario == null) {
             throw new Error();
         } else {
-            return (<RolUsuario> RolUsuario);
+            return (<RolUsuario> rolUsuario);
         }
 
     }

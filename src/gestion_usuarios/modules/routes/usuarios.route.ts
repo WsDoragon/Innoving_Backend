@@ -7,11 +7,11 @@ class UsuariosRoute {
 
     constructor() {
         this.router = Router();
-        this.router.put('/', UsuarioController.editUsuario);
-        this.router.post('/', UsuarioController.addUsuario);
-        this.router.get('/', UsuarioController.getUsuarios);
+        this.router.put('/edit', UsuarioController.editUsuario);
+        this.router.post('/create', UsuarioController.addUsuario);
+        this.router.get('/all', UsuarioController.getUsuarios);
         this.router.get('/search', UsuarioController.searchUsuarios);
-        this.router.get('/:id', UsuarioController.getUsuario);
+        this.router.get('/', UsuarioController.getUsuario);
         this.router.post('/login',UsuarioController.loginUsuario);
     }
 }

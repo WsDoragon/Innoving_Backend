@@ -14,7 +14,8 @@ class RolUsuarioController {
     }
     
     public addRolUsuarios(request: Request, response: Response) {
-        RolUsuarioRepository.addRolUsuario(request.body.rut, request.body.roles).then(Roles => {
+        console.log(request.body);
+        RolUsuarioRepository.addRolUsuario(request.body.id, request.body.roles).then(Roles => {
             response.status(200).json({status: true, data: Roles});
         }, error => {
             response.status(404).json({status: false});
@@ -22,7 +23,16 @@ class RolUsuarioController {
     }
 
     public changeRolUsuarios(request: Request, response: Response) {
-        RolUsuarioRepository.changeRolUsuario(request.body.rut, request.body.roles).then(Roles => {
+        RolUsuarioRepository.changeRolUsuario(request.body.id, request.body.newRoles).then(Roles => {
+            response.status(200).json({status: true, data: Roles});
+        }, error => {
+            response.status(404).json({status: false});
+        });
+    }
+
+    public findRolUsuarios(request: Request, response: Response) {
+        let data : any = request.query.rut;
+        RolUsuarioRepository.findRolUsuario(data).then(Roles => {
             response.status(200).json({status: true, data: Roles});
         }, error => {
             response.status(404).json({status: false});
