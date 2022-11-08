@@ -46,7 +46,7 @@ class UsuarioController {
             response.status(400).json({status: false, message: 'El primer nombre es requerido'});
         }
 
-        let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.correo, request.body.contraseña, request.body.status);        
+        let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);        
         UsuarioRepository.newUsuario(usuario).then(usuarios => {
             response.status(201).json({status: true, data: usuarios});
         }, error => {
@@ -57,7 +57,7 @@ class UsuarioController {
     public editUsuario(request: Request, response: Response){   
         console.log(request.body.newInfo.roles);
         let newInfo : any = request.body.newInfo;
-        let usuario = new Usuario(newInfo.rut, newInfo.nombre, newInfo.apellido, newInfo.correo, newInfo.contraseña, newInfo.status);
+        let usuario = new Usuario(newInfo.rut, newInfo.nombre, newInfo.apellido, newInfo.contraseña, newInfo.correo, newInfo.status);
         UsuarioRepository.editUsuario(request.body.id, usuario).then(usuarios => {
             response.status(201).json({status: true, data: usuarios});
         }, error => {
