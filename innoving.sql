@@ -38,7 +38,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Gerente'),(2,'Administrador'),(3,'Analista');
+INSERT INTO `rol` VALUES (1,'Gerente'),(2,'Administrador'),(3,'Analista'),(4,'Proveedor');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +62,7 @@ CREATE TABLE `rol_usuario` (
 
 LOCK TABLES `rol_usuario` WRITE;
 /*!40000 ALTER TABLE `rol_usuario` DISABLE KEYS */;
-INSERT INTO `rol_usuario` VALUES ('a',1),('a',2),('a',3);
+INSERT INTO `rol_usuario` VALUES ('a',1),('a',2),('a',3),('b',4);
 /*!40000 ALTER TABLE `rol_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,8 +78,8 @@ CREATE TABLE `usuario` (
   `nombre` varchar(255) NOT NULL DEFAULT '0',
   `apellido` varchar(255) NOT NULL DEFAULT '0',
   `correo` varchar(255) NOT NULL DEFAULT '0',
-  `constraseña` varchar(30) NOT NULL DEFAULT '0',
-  `state` tinyint(4) NOT NULL,
+  `contraseña` varchar(30) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`rut`),
   UNIQUE KEY `rut_UNIQUE` (`rut`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -91,7 +91,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('a','a','a','a','a',1);
+INSERT INTO `usuario` VALUES ('a','test1','t1','test1@test.com','a',1), ('b','test2','t2','test2@test.com','b',1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

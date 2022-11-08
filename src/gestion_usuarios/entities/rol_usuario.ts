@@ -1,4 +1,4 @@
 export class RolUsuario {
-    public id_rol: number;
+    public idrol: number;
     public id_rut: string;
 }
