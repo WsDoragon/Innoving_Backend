@@ -82,6 +82,26 @@ class UsuarioController {
             response.status(404).json({status: false});
         });
     }
+
+    public disableUser(request: Request, response: Response) {
+        console.log('search '+ request.query.params);
+
+        UsuarioRepository.desactivarUser(request.body.rut).then(Usuarios => {
+            response.status(200).json({status: true, data: Usuarios});
+        }, error => {
+            response.status(404).json({status: false});
+        });
+    }
+
+    public enableUser(request: Request, response: Response) {
+        console.log('search '+ request.query.params);
+
+        UsuarioRepository.activarUser(request.body.rut).then(Usuarios => {
+            response.status(200).json({status: true, data: Usuarios});
+        }, error => {
+            response.status(404).json({status: false});
+        });
+    }
 }
 
 export default new UsuarioController();

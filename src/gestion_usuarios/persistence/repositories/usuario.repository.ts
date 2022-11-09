@@ -99,12 +99,28 @@ class UsuarioRepository {
         for(let j of roles){
             rol = rol+j.name+"-";
         }
-        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol};
+        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
             
             json.push(a);
         }
         return json;
     }
+
+public async desactivarUser(id: string){
+    let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "0" WHERE rut = "${id}"`
+        , {type: persistence.QueryTypes.UPDATE});
+    console.log(`Usuario deshabilitado: ${id}`)
+    return editUsuario;
+
+}
+
+public async activarUser(id: string){
+    let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "1" WHERE rut = "${id}"`
+        , {type: persistence.QueryTypes.UPDATE});
+    console.log(`Usuario deshabilitado: ${id}`)
+    return editUsuario;
+
+}
 }
 
 export default new UsuarioRepository();

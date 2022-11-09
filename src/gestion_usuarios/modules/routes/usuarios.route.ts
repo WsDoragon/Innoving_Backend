@@ -13,6 +13,8 @@ class UsuariosRoute {
         this.router.get('/search', UsuarioController.searchUsuarios);
         this.router.get('/', UsuarioController.getUsuario);
         this.router.post('/login',UsuarioController.loginUsuario);
+        this.router.put('/disable',UsuarioController.disableUser);
+        this.router.put('/enable',UsuarioController.enableUser);
     }
 }
 
