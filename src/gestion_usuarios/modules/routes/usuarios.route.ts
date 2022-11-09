@@ -10,6 +10,8 @@ class UsuariosRoute {
         this.router.put('/edit', UsuarioController.editUsuario);
         this.router.post('/create', UsuarioController.addUsuario);
         this.router.get('/all',UsuarioController.getAllUsers);
+        this.router.get('/allEnabled',UsuarioController.getEnabledUsers);
+        this.router.get('/allDisabled',UsuarioController.getDisabledUsers);
         this.router.get('/search', UsuarioController.searchUsuarios);
         this.router.get('/', UsuarioController.getUsuario);
         this.router.post('/login',UsuarioController.loginUsuario);

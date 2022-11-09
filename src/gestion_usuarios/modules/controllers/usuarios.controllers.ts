@@ -83,6 +83,26 @@ class UsuarioController {
         });
     }
 
+    public getEnabledUsers(request: Request, response: Response) {
+        console.log('search '+ request.query.params);
+
+        UsuarioRepository.getAllEnabled().then(Usuarios => {
+            response.status(200).json({status: true, data: Usuarios});
+        }, error => {
+            response.status(404).json({status: false});
+        });
+    }
+    
+    public getDisabledUsers(request: Request, response: Response) {
+        console.log('search '+ request.query.params);
+
+        UsuarioRepository.getAllDisabled().then(Usuarios => {
+            response.status(200).json({status: true, data: Usuarios});
+        }, error => {
+            response.status(404).json({status: false});
+        });
+    }
+
     public disableUser(request: Request, response: Response) {
         console.log('search '+ request.query.params);
 

@@ -106,6 +106,47 @@ class UsuarioRepository {
         return json;
     }
 
+
+    public async getAllEnabled(){
+        let json:any[] = [];
+        const result = await persistence.query(`SELECT * FROM usuario WHERE status=1`, {type: persistence.QueryTypes.SELECT});
+
+        for (let i of result){
+        let rol = "-"
+        const roles = await persistence.query(`SELECT name FROM rol_usuario
+                                                JOIN rol ON id=id_rol
+                                                WHERE id_rut ="${i.rut}" `,
+                                                {type: persistence.QueryTypes.SELECT});
+        for(let j of roles){
+            rol = rol+j.name+"-";
+        }
+        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
+            
+            json.push(a);
+        }
+        return json;
+    }
+
+    public async getAllDisabled(){
+        let json:any[] = [];
+        const result = await persistence.query(`SELECT * FROM usuario WHERE status=0`, {type: persistence.QueryTypes.SELECT});
+
+        for (let i of result){
+        let rol = "-"
+        const roles = await persistence.query(`SELECT name FROM rol_usuario
+                                                JOIN rol ON id=id_rol
+                                                WHERE id_rut ="${i.rut}" `,
+                                                {type: persistence.QueryTypes.SELECT});
+        for(let j of roles){
+            rol = rol+j.name+"-";
+        }
+        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
+            
+            json.push(a);
+        }
+        return json;
+    }
+
 public async desactivarUser(id: string){
     let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "0" WHERE rut = "${id}"`
         , {type: persistence.QueryTypes.UPDATE});
