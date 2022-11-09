@@ -94,7 +94,7 @@ class UsuarioRepository {
         for(let j of roles){
             rol = rol+j.name+"-";
         }
-        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol};
+        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
             
             json.push(a);
         }
