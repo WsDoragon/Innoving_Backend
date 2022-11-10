@@ -91,13 +91,13 @@ class UsuarioRepository {
         const result = await persistence.query(`SELECT * FROM usuario`, {type: persistence.QueryTypes.SELECT});
 
         for (let i of result){
-        let rol = "-"
+        let rol:any = []
         const roles = await persistence.query(`SELECT name FROM rol_usuario
                                                 JOIN rol ON id=id_rol
                                                 WHERE id_rut ="${i.rut}"`,
                                                 {type: persistence.QueryTypes.SELECT});
         for(let j of roles){
-            rol = rol+j.name+"-";
+            rol.push(j.name);
         }
         let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
             
@@ -112,13 +112,13 @@ class UsuarioRepository {
         const result = await persistence.query(`SELECT * FROM usuario WHERE status=1`, {type: persistence.QueryTypes.SELECT});
 
         for (let i of result){
-        let rol = "-"
+            let rol:any = []
         const roles = await persistence.query(`SELECT name FROM rol_usuario
                                                 JOIN rol ON id=id_rol
                                                 WHERE id_rut ="${i.rut}" `,
                                                 {type: persistence.QueryTypes.SELECT});
         for(let j of roles){
-            rol = rol+j.name+"-";
+            rol.push(j.name);
         }
         let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
             
