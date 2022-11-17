@@ -41,17 +41,18 @@ class UsuarioController {
 
     public addUsuario(request: Request, response: Response) {
 
-        if (request.body.apellido == "" || request.body.apellido == null || request.body.apellido == undefined) {
+        if ((request.body.rut == "" || request.body.rut == null || request.body.rut == undefined || request.body.nombre == "")) {
             
-            response.status(400).json({status: false, message: 'El primer nombre es requerido'});
+            response.status(404).json({status: false, error: 'El RUT y primer nombre es requerido'});
         }
-
-        let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);        
-        UsuarioRepository.newUsuario(usuario).then(usuarios => {
-            response.status(201).json({status: true, data: usuarios});
-        }, error => {
-            response.status(400).json({status: false});
-        });
+        else{
+            let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);        
+            UsuarioRepository.newUsuario(usuario).then(usuarios => {
+                response.status(201).json({status: true, data: usuarios});
+            }, error => {
+                response.status(409).json({status: false, error: "usuario ya creado en sistema"});
+            });
+    }
     }
 
     public editUsuario(request: Request, response: Response){   
