@@ -106,6 +106,45 @@ class UsuarioRepository {
         return json;
     }
 
+    public async getAllP(){
+        console.log("xd")
+        let json:any[] = [];
+
+        const result = await persistence.query(`select * FROM usuario JOIN rol_usuario ON rut=id_rut WHERE id_rol = 4`, {type: persistence.QueryTypes.SELECT});
+
+        for (let i of result){
+            let rol:any = []
+
+        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
+            
+            json.push(a);
+        }
+        console.log(result)
+        return json;
+    }
+
+    public async getAllInnoving(){
+        let json:any[] = [];
+        //ARREGLAR
+        const result = await persistence.query(`select * FROM usuario JOIN rol_usuario ON rut=id_rut WHERE id_rol != 4;`, {type: persistence.QueryTypes.SELECT});
+
+        for (let i of result){
+            let rol:any = []
+        const roles = await persistence.query(`SELECT name FROM rol_usuario
+                                                JOIN rol ON id=id_rol
+                                                WHERE id_rut ="${i.rut}" `,
+                                                {type: persistence.QueryTypes.SELECT});
+        for(let j of roles){
+            rol.push(j.name);
+        }
+        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
+            
+            json.push(a);
+        }
+        return json;
+    }
+
+
 
     public async getAllEnabled(){
         let json:any[] = [];

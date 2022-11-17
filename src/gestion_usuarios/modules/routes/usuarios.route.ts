@@ -17,6 +17,7 @@ class UsuariosRoute {
         this.router.post('/login',UsuarioController.loginUsuario);
         this.router.put('/disable',UsuarioController.disableUser);
         this.router.put('/enable',UsuarioController.enableUser);
+        this.router.get('/allProv',UsuarioController.getAllProv);
     }
 }
 
