@@ -25,14 +25,34 @@ class UsuarioRepository {
     }
 
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
-        let newUsuario: any = await UsuarioModel.create(Usuario);
 
+        //hasheamos
+        var hash = require('hash.js')
+        hash.sha256().update('abc').digest('hex')
+
+        var sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+        Usuario.contraseña = hashedPass;
+
+        //fin del hash
+
+        let newUsuario: any = await UsuarioModel.create(Usuario);
         return <Usuario> newUsuario;
 
     }
 
     public async editUsuario(currentID: string, Usuario: Usuario): Promise<Usuario> {
-        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${Usuario.contraseña}" WHERE rut = "${currentID}"`
+
+        //hasheamos
+        var hash = require('hash.js')
+        hash.sha256().update('abc').digest('hex')
+
+        var sha512 = require('hash.js/lib/hash/sha/512');
+        var hashedPass=hash.sha512().update(Usuario.contraseña).digest('hex');
+
+        //fin del hash
+
+        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${hashedPass}" WHERE rut = "${currentID}"`
         , {type: persistence.QueryTypes.UPDATE});
         return <Usuario> editUsuario;
 
@@ -59,10 +79,22 @@ class UsuarioRepository {
             "status": Number,
             "roles": []
         }
-        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${creds.password}"`, {type: persistence.QueryTypes.SELECT})
+
+        //hasheamos
+        var hash = require('hash.js')
+        hash.sha256().update('abc').digest('hex')
+
+        var sha512 = require('hash.js/lib/hash/sha/512');
+        var hashedPass=hash.sha512().update(creds.password).digest('hex');
+        console.log(creds.password);
+        console.log(`La contrasenia hasheada es ${hashedPass}`);
+
+        //fin del hash
+
+        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${hashedPass}"`, {type: persistence.QueryTypes.SELECT})
         
         if(usuario.length == 0){
-            console.log("rut o contraseña erroneos")
+            console.log(`rut o contraseña erroneos xD ${hashedPass}`)
             return ({message: "Rut/Contraseña no validos"})
         }
         if(usuario[0].status == 0){
