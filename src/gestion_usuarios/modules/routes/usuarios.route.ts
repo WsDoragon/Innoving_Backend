@@ -18,6 +18,7 @@ class UsuariosRoute {
         this.router.put('/disable',UsuarioController.disableUser);
         this.router.put('/enable',UsuarioController.enableUser);
         this.router.get('/allProv',UsuarioController.getAllProv);
+        this.router.get('/allInnov',UsuarioController.getAllInnov);
     }
 }
 

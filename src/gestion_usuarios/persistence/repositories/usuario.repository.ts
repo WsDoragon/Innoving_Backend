@@ -126,7 +126,12 @@ class UsuarioRepository {
     public async getAllInnoving(){
         let json:any[] = [];
         //ARREGLAR
-        const result = await persistence.query(`select * FROM usuario JOIN rol_usuario ON rut=id_rut WHERE id_rol != 4;`, {type: persistence.QueryTypes.SELECT});
+        const result = await persistence.query(`select DISTINCT 
+                                                rut,nombre, apellido, correo, contraseña, status 
+                                                FROM usuario 
+                                                JOIN rol_usuario 
+                                                ON rut=id_rut 
+                                                WHERE id_rol != 4;`, {type: persistence.QueryTypes.SELECT});
 
         for (let i of result){
             let rol:any = []
