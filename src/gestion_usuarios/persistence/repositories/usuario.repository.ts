@@ -213,6 +213,8 @@ class UsuarioRepository {
     public async resetPassword(email: string){
         console.log(email)
 
+        console.log(process.env.EMAIL_PASSWORD)
+
         const user = await UsuarioModel.findOne({
             where: {
                 correo: email
@@ -245,8 +247,8 @@ class UsuarioRepository {
             to: `${test.correo}`,
             subject: 'Enlace para recuperar tu cuenta de Innoving',
             text:
-            `su enlace para recuperar la contraseña es \n
-            url: localhost:3000/resetPass/${test.rut}/${token}`
+            `su enlace para recuperar la contraseña es:\nhttp://localhost:3000/resetPass/${test.rut}/${token}`
+            
         };
 
         transporter.sendMail(mailOptions, (err, response) => {
@@ -260,7 +262,6 @@ class UsuarioRepository {
 
 
     }
-
 
 }
 
