@@ -1,6 +1,6 @@
 -- MariaDB dump 10.19  Distrib 10.6.5-MariaDB, for Win64 (AMD64)
 --
--- Host: localhost    Database: innoving2
+-- Host: localhost    Database: innoving
 -- ------------------------------------------------------
 -- Server version	10.6.5-MariaDB
 
@@ -29,7 +29,7 @@ CREATE TABLE `rol` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `rol_usuario` (
 
 LOCK TABLES `rol_usuario` WRITE;
 /*!40000 ALTER TABLE `rol_usuario` DISABLE KEYS */;
-INSERT INTO `rol_usuario` VALUES ('a',1),('a',2),('a',3),('b',4);
+INSERT INTO `rol_usuario` VALUES ('20318537-5',1),('20318537-5',2),('20318537-5',3),('a',1),('a',2),('a',3),('ab',1),('ab',2),('ab',3),('abc',2),('b',4),('c',3),('d',2),('d',3),('jorge',4),('juanito',4);
 /*!40000 ALTER TABLE `rol_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,11 +75,12 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuario` (
   `rut` varchar(20) NOT NULL DEFAULT '0',
-  `nombre` varchar(255) NOT NULL DEFAULT '0',
-  `apellido` varchar(255) NOT NULL DEFAULT '0',
-  `correo` varchar(255) NOT NULL DEFAULT '0',
-  `contraseña` varchar(30) NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `apellido` varchar(255) NOT NULL,
+  `correo` varchar(255) NOT NULL,
+  `contraseña` varchar(255) NOT NULL,
+  `status` int(11) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`rut`),
   UNIQUE KEY `rut_UNIQUE` (`rut`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -91,7 +92,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('a','test1','t1','test1@test.com','a',1), ('b','test2','t2','test2@test.com','b',1);
+INSERT INTO `usuario` VALUES ('20318537-5','Jorge','Gonzalez','jorge.gonzalez04@alumnos.uach.cl','a',1,NULL),('a','test1','t1','test1@test.com','a',1,NULL),('ab','ab','ab','ab','ab',1,NULL),('abc','abc','abc','abc','abc',1,NULL),('b','test2','t2','test2@test.com','b',1,NULL),('c','c','c','c','c',1,NULL),('d','d','d','d','d',0,NULL),('jorge','jorge','jorge','jorge','025julio2000',1,NULL),('juanito','juanito','juanito','juanito@gmail.com','22enero2000',0,NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -104,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26 10:43:33
+-- Dump completed on 2022-11-30  9:28:36
