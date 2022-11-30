@@ -1,7 +1,4 @@
 import { Dialect, Sequelize } from 'sequelize'
-import UsuarioModel from '../gestion_usuarios/persistence/models/usuario.model'
-import RolModel from '../gestion_usuarios/persistence/models/rol.model'
-import RolUsuarioModel from '../gestion_usuarios/persistence/models/rol_usuario.model'
 import dotenv from 'dotenv'
 
 class Persistence {
