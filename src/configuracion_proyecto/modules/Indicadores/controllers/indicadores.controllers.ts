@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { text } from 'stream/consumers';
+
 import { Indicador } from '../../../entities/indicador/indicador';
 import indicadorRepository from '../../../persistence/repositories/indicador/indicador.repository';
 

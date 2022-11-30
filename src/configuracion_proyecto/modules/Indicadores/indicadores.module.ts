@@ -1,6 +1,8 @@
 import { Router } from "express";
-import IndicadoresRoute from "./router/Indicadores.router"
+// import IndicadoresRoute from "./router/Indicadores.router"
 
+
+import IndicadoresRoute from "./router/Indicadores.router"
 
 class IndicadoresModule {
     public routes : Router;

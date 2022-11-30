@@ -1,5 +1,6 @@
 import { Router } from "express";
 import indicadoresControllers from "../controllers/indicadores.controllers";
+
 class IndicadorRouter { 
     public router : Router;
 

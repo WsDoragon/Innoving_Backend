@@ -2,10 +2,11 @@ import { triggerAsyncId } from "async_hooks";
 import { Model } from "sequelize";
 import { Request, Response } from 'express';
 import { now } from "sequelize/types/utils";
-import { Indicador } from "../../../entities/indicador/indicador";
-import persistence from "../../../../config/persistence";
-import IndicadorModel from "../../models/indicador/Indicador.model";
 
+import { Indicador } from '../../../entities/indicador/indicador';
+import persistence from "../../../../config/persistence";
+
+import IndicadorModel from "../../models/indicador/Indicador.model";
 
 import servicios from "../../../modules/historialPeticiones/controllers/historialPeticiones.controllers"
 const sHistorial = servicios

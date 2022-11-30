@@ -1,11 +1,9 @@
 import { DataTypes, Model } from "sequelize";
-import { Indicador } from "../../../entities/indicador/indicador";
-import persistence from "../../../../config/persistence";
 
+import { Indicador } from '../../../entities/indicador/indicador';
+import persistence from "../../../../config/persistence";
 class  IndicadorModel extends Model<Indicador> {
-  static routes(routes: any) {
-    throw new Error('Method not implemented.');
-  }
+  
     
 }
 

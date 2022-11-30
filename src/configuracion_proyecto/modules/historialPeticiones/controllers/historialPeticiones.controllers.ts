@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { HistorialPeticiones } from '../../../entities/historialpeticiones/historialPeticiones';
 
 import historialPeticionRepository from '../../../persistence/repositories/historialPeticion/historialPeticion.repository';
-
+import persistence from '../../../../config/persistence';
 
 class HistorialPeticionesController {
 
@@ -32,6 +32,21 @@ class HistorialPeticionesController {
     }
 
     public setHistorial(request : Request, response : Response){
+        const DELETE_QUERY = `SELECT id_imm FROM historialpeticiones WHERE id_imm = '${request.body.id}' AND tipo = ${request.body.tipo}`
+        persistence.query(DELETE_QUERY, (err : any, response : any) =>{
+            if(err) console.log(err)
+            else{
+                var idIndicadores = response.map(function(x : any) {
+                    return x.id;
+                 });
+                 for(let i=0; i < idIndicadores.length ; i++){ 
+                    const ADD_QUERY = `UPDATE historialpeticiones SET id_imm = '${request.body.D}' WHERE id_imm = "${request.body.id}" AND tipo = ${request.body.tipo};`
+                    persistence.query(ADD_QUERY, (err : any) =>{
+                        if(err) console.log(err)
+                    })   
+                }
+            }
+        })
 
     }
 }
