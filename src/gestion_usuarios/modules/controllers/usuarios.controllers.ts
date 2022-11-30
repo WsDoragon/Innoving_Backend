@@ -170,7 +170,7 @@ class UsuarioController {
     public resetPassword1(request: Request, response: Response) {
         usuarioRepository.resetPassword(request.params.id, request.params.token, request.body.password)
             .then(res =>{
-                console.log(res)
+                //console.log(res)
                 response.status(200).json({status: true, data: res})
             }, error =>{
                 //console.log(error)
