@@ -157,7 +157,7 @@ class UsuarioController {
         }
         else{
             console.log("Solicitud correcta: " + request.body.email)
-            UsuarioRepository.resetPassword(request.body.email).then( res =>{
+            UsuarioRepository.forgotPassword(request.body.email).then( res =>{
                 response.status(200).json({status: true, data: "solicitud cargada"})
             }, error=>{
                 response.status(404).json({status:false, mensaje:"Error en su consulta, usuario no existe o error en base de datos"})

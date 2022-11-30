@@ -210,7 +210,7 @@ class UsuarioRepository {
 
     }
 
-    public async resetPassword(email: string){
+    public async forgotPassword(email: string){
         console.log(email)
 
         console.log(process.env.EMAIL_PASSWORD)
@@ -260,7 +260,10 @@ class UsuarioRepository {
             }
         })
 
+    }
 
+    public async resetPassword(email: string, tokenV: string, password:string){
+        return null
     }
 
 }
