@@ -145,6 +145,27 @@ class UsuarioController {
             response.status(404).json({status: false});
         });
     }
+
+    public resetPassword1(request: Request, response: Response) {
+
+        console.log("reset pasword")
+
+        if ((request.body.email === "" )) {
+            console.log("No se ingreso email")
+            response.status(404).json({status: false, error: 'El e-mail es requerido para la solicitud'});
+
+        }
+        else{
+            console.log("Solicitud correcta: " + request.body.email)
+            UsuarioRepository.resetPassword(request.body.email).then( res =>{
+                response.status(200).json({status: true, data: "solicitud cargada"})
+            }, error=>{
+                response.status(404).json({status:false, mensaje:"Error en su consulta, usuario no existe o error en base de datos"})
+            });
+            
+        }
+    }
+
 }
 
 export default new UsuarioController();

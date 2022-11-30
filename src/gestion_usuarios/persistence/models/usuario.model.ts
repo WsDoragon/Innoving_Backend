@@ -30,6 +30,9 @@ UsuarioModel.init({
     status: {
         type: DataTypes.INTEGER,
     },
+    token:{
+      type: DataTypes.STRING,
+    },
   }, {
     tableName: 'usuario',
     timestamps: false,

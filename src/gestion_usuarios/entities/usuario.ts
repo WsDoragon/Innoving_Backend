@@ -5,6 +5,7 @@ export class Usuario {
     public contraseña: string;
     public correo: string;
     public status: number;
+    public token: string;
 
 
     constructor(rut: string, nombre: string, apellido: string, contraseña: string, correo: string, status:number) {

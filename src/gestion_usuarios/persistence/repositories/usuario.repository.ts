@@ -2,6 +2,9 @@ import { Usuario } from "../../entities/usuario";
 import persistence from "../../../config/persistence";
 import UsuarioModel from "../models/usuario.model";
 
+import jwt from 'jsonwebtoken'
+import nodemailer from 'nodemailer'
+
 class UsuarioRepository {
 
     public async findUsuario(id: string): Promise<Usuario> {
@@ -191,21 +194,74 @@ class UsuarioRepository {
         return json;
     }
 
-public async desactivarUser(id: string){
-    let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "0" WHERE rut = "${id}"`
-        , {type: persistence.QueryTypes.UPDATE});
-    console.log(`Usuario deshabilitado: ${id}`)
-    return editUsuario;
+    public async desactivarUser(id: string){
+        let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "0" WHERE rut = "${id}"`
+            , {type: persistence.QueryTypes.UPDATE});
+        console.log(`Usuario deshabilitado: ${id}`)
+        return editUsuario;
 
-}
+    }
 
-public async activarUser(id: string){
-    let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "1" WHERE rut = "${id}"`
-        , {type: persistence.QueryTypes.UPDATE});
-    console.log(`Usuario deshabilitado: ${id}`)
-    return editUsuario;
+    public async activarUser(id: string){
+        let editUsuario: any = await persistence.query(`UPDATE usuario SET status = "1" WHERE rut = "${id}"`
+            , {type: persistence.QueryTypes.UPDATE});
+        console.log(`Usuario deshabilitado: ${id}`)
+        return editUsuario;
 
-}
+    }
+
+    public async resetPassword(email: string){
+        console.log(email)
+
+        const user = await UsuarioModel.findOne({
+            where: {
+                correo: email
+            }
+        })
+
+        if (!user){
+            throw new Error()
+        }
+        let test = user.toJSON()
+        
+        
+        const token = jwt.sign({id: test.rut}, 'innovame1234', {expiresIn:"1h"});
+        user.update({
+            token: token
+        });
+
+        const transporter = nodemailer.createTransport({
+            service:"gmail",
+            auth:{
+                user: `${process.env.EMAIL_ADDRESS}`,
+                pass: `${process.env.EMAIL_PASSWORD}`,
+            }
+        });
+
+        const emailPort = process.env.EMAIL_PORT || 3000;
+
+        const mailOptions={
+            from: `${process.env.EMAIL_FROM}`,
+            to: `${test.correo}`,
+            subject: 'Enlace para recuperar tu cuenta de Innoving',
+            text:
+            `su enlace para recuperar la contraseña es \n
+            url: localhost:3000/resePass/${test.rut}/${token}`
+        };
+
+        transporter.sendMail(mailOptions, (err, response) => {
+            if (err){
+                console.error ("Ha ocurrido un error: ", err);
+            } else {
+                console.log("respuesta:", response);
+                return("email para la recuperacion de contraseña ha sido enviado")
+            }
+        })
+
+
+    }
+
+
 }
 
 export default new UsuarioRepository();

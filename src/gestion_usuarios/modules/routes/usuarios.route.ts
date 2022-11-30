@@ -19,6 +19,8 @@ class UsuariosRoute {
         this.router.put('/enable',UsuarioController.enableUser);
         this.router.get('/allProv',UsuarioController.getAllProv);
         this.router.get('/allInnov',UsuarioController.getAllInnov);
+
+        this.router.post('/passwordReset', UsuarioController.resetPassword1);
     }
 }
 
