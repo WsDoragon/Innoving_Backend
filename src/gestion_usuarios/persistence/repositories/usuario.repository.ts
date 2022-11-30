@@ -35,6 +35,8 @@ class UsuarioRepository {
     }
 
     public async editUsuario(currentID: string, Usuario: Usuario): Promise<Usuario> {
+        console.log("EDITAR USUARIO - DEBUG")
+        console.log(currentID, Usuario)
         let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${Usuario.contraseña}" WHERE rut = "${currentID}"`
         , {type: persistence.QueryTypes.UPDATE});
         return <Usuario> editUsuario;

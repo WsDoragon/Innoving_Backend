@@ -15,8 +15,10 @@ class RolUsuarioRepository {
     }
 
     public async changeRolUsuario(id: string,roles: Array<number>): Promise<RolUsuario> {
+        console.log("EDITAR ROL USUARIO - DEBUG")
+        console.log(id, roles)
         this.deleteRolUsuario_All(id);
-        let changeRolUsuario = this.addRolUsuario(id,roles);
+        let changeRolUsuario = await this.addRolUsuario(id,roles);
         return changeRolUsuario;
     }
 
