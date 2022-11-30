@@ -273,7 +273,7 @@ class UsuarioRepository {
 
         if (!regExPassword.test(password)){
             console.log("contraseña no cumple estandares")
-            throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula, 1 caracter especial')
+            throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula')
         }
 
         const resetPassword : any = await UsuarioModel.update({contraseña: password, token:""}, {
