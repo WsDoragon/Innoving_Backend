@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Usuario } from '../../entities/usuario';
+import usuarioRepository from '../../persistence/repositories/usuario.repository';
 import UsuarioRepository from '../../persistence/repositories/usuario.repository';
 
 class UsuarioController {
@@ -146,9 +147,9 @@ class UsuarioController {
         });
     }
 
-    public resetPassword1(request: Request, response: Response) {
+    public forgotPassword1(request: Request, response: Response) {
 
-        console.log("reset pasword")
+        console.log("forgot pasword")
 
         if ((request.body.email === "" )) {
             console.log("No se ingreso email")
@@ -164,6 +165,18 @@ class UsuarioController {
             });
             
         }
+    }
+
+    public resetPassword1(request: Request, response: Response) {
+        usuarioRepository.resetPassword(request.params.id, request.params.token, request.body.password)
+            .then(res =>{
+                console.log(res)
+                response.status(200).json({status: true, data: res})
+            }, error =>{
+                //console.log(error)
+                response.status(404).json({status:false, mensaje:error.message})
+            })
+        //console.log("llega consulta de resetPassword: " + request.body.userPassword)
     }
 
 }

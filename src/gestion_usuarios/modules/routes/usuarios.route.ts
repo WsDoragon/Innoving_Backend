@@ -20,7 +20,8 @@ class UsuariosRoute {
         this.router.get('/allProv',UsuarioController.getAllProv);
         this.router.get('/allInnov',UsuarioController.getAllInnov);
 
-        this.router.post('/passwordReset', UsuarioController.resetPassword1);
+        this.router.post('/forgotPassword', UsuarioController.forgotPassword1);
+        this.router.put('/resetPassword/:id/:token', UsuarioController.resetPassword1)
     }
 }
 

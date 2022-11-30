@@ -4,6 +4,7 @@ import UsuarioModel from "../models/usuario.model";
 
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
+import usuariosModule from "../../modules/usuarios.module";
 
 class UsuarioRepository {
 
@@ -215,7 +216,7 @@ class UsuarioRepository {
     public async forgotPassword(email: string){
         console.log(email)
 
-        console.log(process.env.EMAIL_PASSWORD)
+        
 
         const user = await UsuarioModel.findOne({
             where: {
@@ -235,12 +236,15 @@ class UsuarioRepository {
         });
 
         const transporter = nodemailer.createTransport({
-            service:"gmail",
+            host: 'smtp.ethereal.email',
+            port: 587,
+            //service:"gmail",
             auth:{
                 user: `${process.env.EMAIL_ADDRESS}`,
                 pass: `${process.env.EMAIL_PASSWORD}`,
             }
         });
+
 
         const emailPort = process.env.EMAIL_PORT || 3000;
 
@@ -264,8 +268,21 @@ class UsuarioRepository {
 
     }
 
-    public async resetPassword(email: string, tokenV: string, password:string){
-        return null
+    public async resetPassword(id: string, tokenV: string, password:string){
+        let regExPassword = /^(?=.*[A-Z])(?=.*[0123456789])[A-Za-z\d@$!%*?&#]{8,16}$/;
+
+        if (!regExPassword.test(password)){
+            console.log("contraseña no cumple estandares")
+            throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula, 1 caracter especial')
+        }
+
+        const resetPassword : any = await UsuarioModel.update({contraseña: password, token:""}, {
+            where:{
+                rut: id,
+                token: tokenV
+            }
+        });
+        return resetPassword
     }
 
 }
