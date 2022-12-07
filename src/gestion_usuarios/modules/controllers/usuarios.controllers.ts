@@ -42,19 +42,57 @@ class UsuarioController {
 
     public addUsuario(request: Request, response: Response) {
 
-        if ((request.body.rut == "" || request.body.rut == null || request.body.rut == undefined || request.body.nombre == "")) {
-            
-            response.status(404).json({status: false, error: 'El RUT y primer nombre es requerido'});
+        if((request.body.nombre == "" )) {
+            response.status(404).json({status: false, error: 'El Nombre es requerido'});
         }
+        if((request.body.rut == "" || request.body.rut == null || request.body.rut == undefined)) {
+            response.status(404).json({status: false, error: 'El RUT es requerido'});
+            
+        }
+        if((request.body.roles == "")) {
+            response.status(404).json({status: false, error: 'El Rol es requerido'});
+        }
+        if ((request.body.nombre == "" || (request.body.rut == "" || request.body.rut == null || request.body.rut == undefined) || request.body.roles == "")) {
+            
+            response.status(404).json({status: false, error: 'El Nombre, RUT y Rol son requeridos'});
+        }         
         else{
             let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);        
             UsuarioRepository.newUsuario(usuario).then(usuarios => {
                 response.status(201).json({status: true, data: usuarios});
             }, error => {
-                response.status(409).json({status: false, error: "usuario ya creado en sistema"});
+                response.status(409).json({status: false, error: "Usuario ya creado en sistema"});
             });
     }
     }
+
+    public addUsuarioP(request: Request, response: Response) {
+
+        if((request.body.nombre == "" )) {
+            response.status(404).json({status: false, error: 'El Nombre es requerido'});
+        }
+        if((request.body.rut == "" || request.body.rut == null || request.body.rut == undefined)) {
+            response.status(404).json({status: false, error: 'El RUT es requerido'});
+            
+        }
+        if((request.body.roles == "")) {
+            response.status(404).json({status: false, error: 'El Rol es requerido'});
+        }
+        if ((request.body.nombre == "" || (request.body.rut == "" || request.body.rut == null || request.body.rut == undefined) || request.body.roles == "")) {
+            
+            response.status(404).json({status: false, error: 'El Nombre, RUT y Rol son requeridos'});
+        }         
+        else{
+            let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);        
+            UsuarioRepository.newUsuario(usuario).then(usuarios => {
+                response.status(201).json({status: true, data: usuarios});
+            }, error => {
+                response.status(409).json({status: false, error: "Usuario ya creado en sistema"});
+            });
+    }
+    }
+
+
 
     public editUsuario(request: Request, response: Response){   
         console.log(request.body.newInfo.roles);
