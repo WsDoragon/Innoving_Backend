@@ -177,14 +177,17 @@ class UsuarioRepository {
         return json;
     }
 
-    public async getDisabled(soloInnoving: boolean){
+    public async getDisabled(soloInnoving: string){
         let json:any[] = [];
         let result:any
-        if(soloInnoving){
+        console.log("huh?: "+ (soloInnoving))
+        if(soloInnoving == "yes"){
             result = await persistence.query(`SELECT * FROM usuario JOIN rol_usuario ON rut=id_rut WHERE id_rol!=4 AND status=0 GROUP BY rut;`, {type: persistence.QueryTypes.SELECT});
+            console.log("funcionarios! : "+result)
         }
         else{
             result = await persistence.query(`SELECT * FROM usuario JOIN rol_usuario ON rut=id_rut WHERE id_rol=4 AND status=0 GROUP BY rut;`, {type: persistence.QueryTypes.SELECT});
+            console.log("vidca! : "+result)
         }
         let rol = "-"
         for (let i of result){
