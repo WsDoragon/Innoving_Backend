@@ -282,7 +282,14 @@ class UsuarioRepository {
                 token: tokenV
             }
         });
-        return resetPassword
+        if (resetPassword[0] === 0){
+            throw new Error('Contraseña no cambiada, rut o token no validos.')
+        }
+        else{
+            //console.log(resetPassword[0])
+            return resetPassword
+        }
+        
     }
 
 }
