@@ -96,8 +96,7 @@ class UsuarioController {
     }
 
     public getAllInnov(request: Request, response: Response) {
-        console.log('search '+ request.query.params);
-
+        console.log(request.query.params);
         UsuarioRepository.getAllInnoving().then(Usuarios => {
             response.status(200).json({status: true, data: Usuarios});
         }, error => {
@@ -118,9 +117,9 @@ class UsuarioController {
     }
     
     public getDisabledUsers(request: Request, response: Response) {
-        console.log('search '+ request.query.params);
-
-        UsuarioRepository.getAllDisabled().then(Usuarios => {
+        let data: any = request.query.soloInnoving
+        console.log(data)
+        UsuarioRepository.getDisabled(data).then(Usuarios => {
             response.status(200).json({status: true, data: Usuarios});
         }, error => {
             response.status(404).json({status: false});
