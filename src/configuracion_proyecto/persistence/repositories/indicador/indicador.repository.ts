@@ -51,11 +51,10 @@ class IndicadoreRepository {
         
         
         const myArray = data.id.split("_");
-        const id : number  =  parseInt(myArray[0],10);
+        const id : string  = myArray[0];
         //const id2 : number = parseInt(id  ,10)
         const  solicitud: string = myArray[1];
         const now : string = myArray[2];
-        console.log()
         const indicador : any = await IndicadorModel.findOne({
             where : {id}, 
         });
@@ -116,7 +115,7 @@ class IndicadoreRepository {
 
     public async  deleteIndicador(data : any ){
         const myArray = data.split("_");
-        const id : number  =  parseInt(myArray[0],10);
+        const id : string  =  myArray[0];
         const  solicitud: string = myArray[1];
         const now : string = myArray[2];
 
