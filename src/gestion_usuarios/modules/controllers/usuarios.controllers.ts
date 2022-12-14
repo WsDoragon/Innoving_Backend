@@ -42,19 +42,50 @@ class UsuarioController {
 
     public addUsuario(request: Request, response: Response) {
 
-        if ((request.body.rut == "" || request.body.rut == null || request.body.rut == undefined || request.body.nombre == "")) {
+        let rut:Boolean = (request.body.rut == "" || request.body.rut == null || request.body.rut == undefined);
+        let name:Boolean = (request.body.nombre == "" || request.body.nombre == null || request.body.nombre == undefined);
+        let cons:Boolean = (request.body.contraseña == "" || request.body.contraseña == null || request.body.contraseña == undefined);
+        let rol:Boolean = request.body.roles == "";
+
+
+        if (name || rut || cons || rol) {        
             
-            response.status(404).json({status: false, error: 'El RUT y primer nombre es requerido'});
-        }
+            let text:String = "Faltan datos obligatorios: ";
+
+            if(name){
+                text = text + "Nombre - ";   
+            }
+            if(rut){
+                text = text + "Rut - ";
+            }
+            if(cons){
+                text = text + "Contraseña - ";   
+            }
+            if(rol){
+                text = text + "Rol";
+            }
+            
+            if(text.slice(-3, text.length) == " - "){
+                text = text.slice(0,-3);
+            }
+
+            response.status(404).json({status: false, error: text}); 
+
+            
+            
+
+
+        }         
         else{
             let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);        
             UsuarioRepository.newUsuario(usuario).then(usuarios => {
                 response.status(201).json({status: true, data: usuarios});
             }, error => {
-                response.status(409).json({status: false, error: "usuario ya creado en sistema"});
+                response.status(409).json({status: false, error: "Usuario ya creado en sistema"});
             });
     }
     }
+
 
     public editUsuario(request: Request, response: Response){   
         console.log(request.body.newInfo.roles);
@@ -96,8 +127,7 @@ class UsuarioController {
     }
 
     public getAllInnov(request: Request, response: Response) {
-        console.log('search '+ request.query.params);
-
+        console.log(request.query.params);
         UsuarioRepository.getAllInnoving().then(Usuarios => {
             response.status(200).json({status: true, data: Usuarios});
         }, error => {
@@ -118,9 +148,9 @@ class UsuarioController {
     }
     
     public getDisabledUsers(request: Request, response: Response) {
-        console.log('search '+ request.query.params);
-
-        UsuarioRepository.getAllDisabled().then(Usuarios => {
+        let data: any = request.query.soloInnoving
+        console.log(data)
+        UsuarioRepository.getDisabled(data).then(Usuarios => {
             response.status(200).json({status: true, data: Usuarios});
         }, error => {
             response.status(404).json({status: false});

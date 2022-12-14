@@ -139,7 +139,7 @@ class UsuarioRepository {
             rol.push(j.name);
         }
         let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
-            
+        
             json.push(a);
         }
         return json;
@@ -210,22 +210,22 @@ class UsuarioRepository {
         return json;
     }
 
-    public async getAllDisabled(){
+    public async getDisabled(soloInnoving: string){
         let json:any[] = [];
-        const result = await persistence.query(`SELECT * FROM usuario WHERE status=0`, {type: persistence.QueryTypes.SELECT});
-
-        for (let i of result){
-        let rol = "-"
-        const roles = await persistence.query(`SELECT name FROM rol_usuario
-                                                JOIN rol ON id=id_rol
-                                                WHERE id_rut ="${i.rut}" `,
-                                                {type: persistence.QueryTypes.SELECT});
-        for(let j of roles){
-            rol = rol+j.name+"-";
+        let result:any
+        console.log("huh?: "+ (soloInnoving))
+        if(soloInnoving == "yes"){
+            result = await persistence.query(`SELECT * FROM usuario JOIN rol_usuario ON rut=id_rut WHERE id_rol!=4 AND status=0 GROUP BY rut;`, {type: persistence.QueryTypes.SELECT});
+            console.log("funcionarios! : "+result)
         }
+        else{
+            result = await persistence.query(`SELECT * FROM usuario JOIN rol_usuario ON rut=id_rut WHERE id_rol=4 AND status=0 GROUP BY rut;`, {type: persistence.QueryTypes.SELECT});
+            console.log("vidca! : "+result)
+        }
+        let rol = "-"
+        for (let i of result){
         let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
-            
-            json.push(a);
+        json.push(a);
         }
         return json;
     }
