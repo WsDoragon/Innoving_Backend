@@ -44,11 +44,10 @@ class UsuarioController {
 
         let rut:Boolean = (request.body.rut == "" || request.body.rut == null || request.body.rut == undefined);
         let name:Boolean = (request.body.nombre == "" || request.body.nombre == null || request.body.nombre == undefined);
-        let cons:Boolean = (request.body.contraseña == "" || request.body.contraseña == null || request.body.contraseña == undefined);
         let rol:Boolean = request.body.roles == "";
 
 
-        if (name || rut || cons || rol) {        
+        if (name || rut || rol) {        
             
             let text:String = "Faltan campos por rellenar: ";
             if(name){
@@ -60,19 +59,31 @@ class UsuarioController {
             }
             
             if(request.body.roles != "4"){
-                if(cons){
-                    text = text + "Contraseña - ";   
-                }
                 if(rol){
                     text = text + "Rol";
                 }
             }
 
             else{
-                let d:String = request.body.contraseña.slice(0,2);
-                let m:String = request.body.contraseña.slice(2,-4);
-                let a:String = request.body.contraseña.slice(-4,request.body.contraseña.length);
-                //if()
+                let c:String = request.body.contraseña;
+                let d:String = c.slice(0,2);
+                let m:String = c.slice(2,-4);
+                let a:String = c.slice(-4,c.length);
+                let meses:String[] = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+                if(d.length != 2){
+                    text = text + "Día - ";
+                }
+
+                console.log(meses.includes(m))
+                console.log(c, m)
+                if(meses.includes(m)){
+                    text = text + "Mes - ";
+                }
+
+                if(a.length != 4){
+                    text = text + "Año";
+                }
             }
 
             
