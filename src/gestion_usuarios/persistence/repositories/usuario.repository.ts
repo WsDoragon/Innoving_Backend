@@ -29,8 +29,14 @@ class UsuarioRepository {
     }
 
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
-        let newUsuario: any = await UsuarioModel.create(Usuario);
 
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+        Usuario.contraseña = hashedPass;
+        //fin del hash
+
+        let newUsuario: any = await UsuarioModel.create(Usuario);
         return <Usuario> newUsuario;
 
     }
@@ -38,7 +44,14 @@ class UsuarioRepository {
     public async editUsuario(currentID: string, Usuario: Usuario): Promise<Usuario> {
         console.log("EDITAR USUARIO - DEBUG")
         console.log(currentID, Usuario)
-        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${Usuario.contraseña}" WHERE rut = "${currentID}"`
+
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+        Usuario.contraseña = hashedPass;
+        //fin del hash
+
+        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${hashedPass}" WHERE rut = "${currentID}"`
         , {type: persistence.QueryTypes.UPDATE});
         return <Usuario> editUsuario;
 
@@ -65,7 +78,14 @@ class UsuarioRepository {
             "status": Number,
             "roles": []
         }
-        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${creds.password}"`, {type: persistence.QueryTypes.SELECT})
+
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(creds.password).digest('hex');
+        console.log(hashedPass)
+        //fin del hash
+
+        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${hashedPass}"`, {type: persistence.QueryTypes.SELECT})
         
         if(usuario.length == 0){
             console.log("rut o contraseña erroneos")
@@ -276,7 +296,14 @@ class UsuarioRepository {
             throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula')
         }
 
-        const resetPassword : any = await UsuarioModel.update({contraseña: password, token:""}, {
+
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(password).digest('hex');
+        //fin del hash
+
+
+        const resetPassword : any = await UsuarioModel.update({contraseña: hashedPass, token:""}, {
             where:{
                 rut: id,
                 token: tokenV
