@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+ import { Request, Response } from 'express';
 
 import { text } from 'stream/consumers';
 
@@ -17,11 +17,12 @@ class IndicadorController {
     }
 
     public createIndicador (request : Request ,response : Response) {
+        let sid : string = request.body.NumeroIndicador;
         
         let indicador = new Indicador(
             request.body.id,
             request.body.CalificacionCORFO, 
-            request.body.NumeroIndicador, 
+            parseInt(sid,10), 
             request.body.MisionUniversitaria,
             request.body.nombre,
             request.body.TipoIndicador, 
@@ -32,7 +33,8 @@ class IndicadorController {
             request.body.Frecuencia,
             0, 
             "Añadir", 
-            request.body.antiguaid
+            "",
+            request.body.Descripcion
         );
         console.log(indicador.Aprobado);
         indicadorRepository.createIndicador(indicador).then(indicadores => {
@@ -47,8 +49,9 @@ class IndicadorController {
 
 
     public setAprobado (request : Request ,response : Response){
-        
+        console.log("holax")
         const data : any = request.params;
+        console.log(data)
         
         indicadorRepository.setAprobado(data).then(msg => {
             response.status(201).json({status : true, data : msg});
@@ -59,29 +62,23 @@ class IndicadorController {
     }
 
     public setPeticion  (request : Request ,response : Response){
-        indicadorRepository.setPeticion(request.body.id).then(peticion => {
+        console.log(request.params.id)
+        
+        indicadorRepository.setPeticion(request.params.id).then(peticion => {
             response.status(200).json({status : true , data : peticion })
         }, error => { 
             response.status(404).json({status :  false})
         })
 
     }
-    public  deleteIndicador(request : Request ,response : Response){
-        const data : any = request.params.id
-        indicadorRepository.deleteIndicador(data).then(msg  => {
-            response.status(200).json({status : true , data : msg })
-        }, error => {
-            response.status(404).json({status :  false})
-        })
-    }
-    
 
-    public editarProyecto(request : Request ,response : Response){
-
+    public editarIndicador(request : Request ,response : Response){
+        let sid : string = request.body.NumeroIndicador;
+        let numeroIndicador : number = parseInt(sid,10); 
         let indicador = new Indicador(
             request.body.id,
             request.body.CalificacionCORFO, 
-            request.body.NumeroIndicador, 
+            numeroIndicador, 
             request.body.MisionUniversitaria,
             request.body.nombre,
             request.body.TipoIndicador, 
@@ -92,9 +89,30 @@ class IndicadorController {
             request.body.Frecuencia,
             0, 
             "Editar", 
-            request.body.antiguaid
+            request.body.id_editado,
+            request.body.Descripcion
         );
     }
+
+    public eliminarIndicadorEditado(request : Request ,response : Response){
+
+    }
+
+    public eliminarIndicador(request : Request ,response : Response){
+        
+    }
+
+
+    public  deleteIndicador(request : Request ,response : Response){
+        console.log(request.params.id)
+        const data : any = request.params.id
+        indicadorRepository.deleteIndicador(data).then(msg  => {
+            response.status(200).json({status : true , data : msg })
+        }, error => {
+            response.status(404).json({status :  false})
+        })
+    }
+    
 
 
 

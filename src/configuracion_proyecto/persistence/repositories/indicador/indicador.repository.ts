@@ -9,8 +9,9 @@ import persistence from "../../../../config/persistence";
 import IndicadorModel from "../../models/indicador/Indicador.model";
 
 import servicios from "../../../modules/historialPeticiones/controllers/historialPeticiones.controllers"
+import servicos2 from "../../../modules/metas/controllers/metas.controllers"
 const sHistorial = servicios
-
+const sMetas = servicos2
 
 class IndicadoreRepository {
 
@@ -40,7 +41,7 @@ class IndicadoreRepository {
 
     public async  createIndicador(indicador : Indicador) : Promise<Indicador> {
         let nuevoIndicador : any = await IndicadorModel.create(indicador);
-        console.log(nuevoIndicador.CalificacionCORFO) 
+
         return <Indicador> nuevoIndicador;
     }
 
@@ -52,9 +53,9 @@ class IndicadoreRepository {
         
         const myArray = data.id.split("_");
         const id : string  = myArray[0];
-        //const id2 : number = parseInt(id  ,10)
-        const  solicitud: string = myArray[1];
+        const solicitud : string = myArray[1];
         const now : string = myArray[2];
+        
         const indicador : any = await IndicadorModel.findOne({
             where : {id}, 
         });
@@ -76,40 +77,134 @@ class IndicadoreRepository {
                     estado: "Aprobado", 
                     fecha : now
                 }
-            }  ,0);
+            } as never  ,0 as never );
         }else{
-            sHistorial.createHistorial({
-                body : {
-                    id_imm : id, 
-                    tipo  :1, 
-                    solicitud : "Eliminar", 
-                    estado: "Rechazado", 
-                    fecha : now
-                }
-            },0);
+            if(solicitud === "Eliminar"){
+                sHistorial.createHistorial({
+                    body : {
+                        id_imm : id, 
+                        tipo  :1, 
+                        solicitud : "Eliminar", 
+                        estado: "Rechazado", 
+                        fecha : now
+                    }
+                } as never ,0 as never);
+            } else{ 
+                sHistorial.createHistorial({
+                    body :{
+                        id_imm : id, 
+                        tipo  :1, 
+                        solicitud : "Eliminar", 
+                        estado: "Aprobado", 
+                        fecha : now
+                    }
+                } as never , 0 as never )
+            }
 
-         }
-         
+            
+        }
+        
+        
+        return "ok"
 
     }
 
-    public async  setPeticion(id : number) {
+    public async  setPeticion(id : string) {
         
+        console.log(id)
         const indicador : any = await IndicadorModel.findOne({
             where : {id}, 
         });
+        
         if(!indicador){
             throw new Error();
             
         }
         indicador.set({
             Aprobado : 0, 
-            Peticion : "Eliminar"
+            peticion : "Eliminar"
 
         })
         indicador.save();
 
         return "ok"
+
+    }
+
+
+    public async editarIndicador(id : string, indicador: Indicador){
+        const nuevoIndicador : any = await IndicadorModel.create(indicador);
+        
+        const ADD_QUERY= `UPDATE indicadores SET Aprobado = 3 WHERE id = '${id}';`
+        const desactivarMeta : any = await  persistence.query(ADD_QUERY, {type: persistence.QueryTypes.UPDATE});
+        
+    
+        return (<string> "ok")
+    } 
+
+    public async  eliminarIndicadorEditado(data : any){
+        const myArray = data.split("_");
+        const ideliminar = myArray[0];
+        const idantigua = myArray[1];
+        const now = myArray[2];
+        const ADD_QUERY = `DELETE FROM indicadores WHERE id = "${ideliminar}";`
+        const  eliminarIndicador : any =  await persistence.query(ADD_QUERY, {type: persistence.QueryTypes.DELETE});
+
+        if(!eliminarIndicador)
+            throw new Error()
+
+        const ADD_QUERY2 = `UPDATE indicadores SET Aprobado = 1 WHERE id = '${idantigua}';`
+        const updateIndicador : any = await persistence.query(ADD_QUERY2, {type: persistence.QueryTypes.UPDATE});
+        if(!updateIndicador)
+            throw new Error()
+
+        sHistorial.createHistorial({
+            body: {
+                id_imm: idantigua, 
+                tipo: 1, 
+                solicitud: 'Editar', 
+                estado: 'Rechazado', 
+                fecha: now 
+            }  }as never, 0 as never );
+
+    }
+
+    public async  eliminarIndicador(data : any){
+
+        const myArray = data.split("_");
+        const ideliminar = myArray[0];
+        const idnueva = myArray[1];
+        const now = myArray[2];
+
+        const ADD_QUERY = `DELETE FROM indicadores WHERE id = "${ideliminar}";`
+        const  eliminarIndicador : any =  await persistence.query(ADD_QUERY, {type: persistence.QueryTypes.DELETE});
+
+        
+    
+         sHistorial.setHistorial({
+            body: { 
+                D: idnueva.slice(0,-2),
+                 id: ideliminar, 
+                 tipo: 1
+            }} as never, 0 as never );
+        sMetas.cambiarMetasIndicador({
+            body: { 
+                idnueva: idnueva.slice(0,-2), 
+                ideliminar: ideliminar
+            }} as never , 0 as never );
+
+        const UPDATE_QUERY = `UPDATE indicadores SET Aprobado = 1, id = "${idnueva.slice(0,-2)}"  WHERE id = "${idnueva}";`
+        const updateIndicador  : any = await  persistence.query(UPDATE_QUERY, {type: persistence.QueryTypes.UPDATE});
+       
+
+        sHistorial.createHistorial({
+            body: { 
+                id_imm: idnueva.slice(0,-2),
+                tipo: 1, 
+                solicitud: 'Editar',
+                estado: 'Aprobado', 
+                fecha: now 
+            }} as never , 0 as never );
 
     }
 
@@ -119,7 +214,6 @@ class IndicadoreRepository {
         const  solicitud: string = myArray[1];
         const now : string = myArray[2];
 
-        const idNum : number = Math.floor(Math.random() * 999999);
         const indicador : any = await IndicadorModel.findOne({
             where : {id}, 
         });
@@ -128,71 +222,43 @@ class IndicadoreRepository {
             
         }
         indicador.set({
-            id : idNum, 
-            tipo : 1,
-            Aprobado : 2, 
-            antiguaid : id 
+         
+            
+            Aprobado : 2 
         })
-
-        // sHistorial.setHistorial( {
-        //     idNum  : idNum, 
-        //     id : id, 
-        //     tipo : 1
-        // }, 0 )
+        indicador.save()
 
         if(solicitud === "Eliminar"){
             sHistorial.createHistorial( {
                 body : {
-                    id_imm : idNum, 
+                    id_imm : id, 
                     tipo  :1, 
                     solicitud : "Eliminar", 
                     estado: "Aprobado", 
                     fecha : now
                 }
-            }, 0 );
+            } as never,   0 as never );
             }else{
             sHistorial.createHistorial( {
                 body : {
-                    id_imm : idNum, 
+                    id_imm : id, 
                     tipo  :1, 
                     solicitud : "Añadir", 
                     estado: "Rechazado", 
                     fecha : now
                 }
-            },0 );
+            } as never ,0 as never );
 
             }
-        indicador.save()
+        
 
             return "ok "
 
 
     }
 
-    public async editarIndicador(id : string, indicador: Indicador){
-        const indicador_ :any = await IndicadorModel.findByPk(id)
+    
 
-        if(!indicador_){
-            throw new Error()
-        }
-
-
-        indicador_.CalificacionCORFO = indicador.CalificacionCORFO;
-        indicador_.NumeroIndicador = indicador.NumeroIndicador;
-        indicador_.MisionUniversitaria = indicador.MisionUniversitaria;
-        indicador_.nombre = indicador.nombre;
-        indicador_.TipoIndicador = indicador.TipoIndicador;
-        indicador_.eje = indicador.eje;
-        indicador_.Unidad = indicador.Unidad;
-        indicador_.FuenteInformacion = indicador.FuenteInformacion;
-        indicador_.Responsable = indicador.Responsable;
-        indicador_.Frecuencia = indicador.Frecuencia;
-        indicador_.Aprobado = indicador.Aprobado;
-        indicador_.Peticion = indicador.peticion;
-
-        indicador_.save();
-        return (<string> "ok")
-    } 
     
 
 }

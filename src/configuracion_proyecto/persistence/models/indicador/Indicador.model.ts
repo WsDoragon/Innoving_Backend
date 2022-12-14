@@ -63,14 +63,18 @@ IndicadorModel.init({
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    peticion: {
+    Peticion: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    antiguaid: {
+    id_editado: {
         type: DataTypes.STRING,
         allowNull: false
     },
+    Descripcion : { 
+        type: DataTypes.STRING,
+        allowNull: false
+    }
     
 }, {
     tableName : "indicadores",

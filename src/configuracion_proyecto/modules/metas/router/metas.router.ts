@@ -5,11 +5,14 @@ class MetasRouter {
 
     constructor(){
         this.router = Router();
-        this.router.get("/lista", metasControllers.getMetas )
-        this.router.post("/addmetas",metasControllers.createMetas)
-        this.router.put("/setaprobado/:id",metasControllers.setAprobado)
-        this.router.put("/setpeticion/:id",metasControllers.setPeticion )
-        this.router.put("/deletemetas/:id",metasControllers.deleteMetas)
+        this.router.get("/lista", metasControllers.getMetas );
+        this.router.post("/addmetas",metasControllers.createMetas);
+        this.router.put("/setaprobado/:id",metasControllers.setAprobado);
+        this.router.put("/setpeticion/:id",metasControllers.setPeticion);
+        this.router.put("/deletemetas/:id",metasControllers.deleteMetas);
+        this.router.put("/editarmeta/:id",metasControllers.editarMeta);
+        this.router.delete('/eliminarmetaeditado/:id',metasControllers.eliminarMetaEditado);
+        this.router.delete('/eliminarmeta/:id',metasControllers.eliminarMeta);
     }
 
 

@@ -1,6 +1,6 @@
 export class HistorialPeticiones{
     public id : number;
-    public id_imm : number;
+    public id_imm : string;
     public tipo : number;
     public solicitud : string;
     public estado :string;
@@ -8,7 +8,7 @@ export class HistorialPeticiones{
 
 
 
-    constructor(id : number,id_imm : number,tipo : number, solicitud : string, estado: string, fecha: string){
+    constructor(id : number,id_imm : string,tipo : number, solicitud : string, estado: string, fecha: string){
         this.id = id;
         this.id_imm = id_imm;
         this.tipo = tipo; 

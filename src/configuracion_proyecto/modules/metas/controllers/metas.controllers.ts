@@ -13,10 +13,10 @@ class MetasController {
 
 
     public createMetas( request : Request, response : Response){
-       //const generadorid : string =  Math.random().toString(36).substr(2,18);
-       console.log(request.body.id) 
+       const generadorid : number =   Math.floor(Math.random() * 999999);
+       
        let meta = new Metas(
-            request.body.id, 
+            generadorid, 
             request.body.idindicador,
             request.body.fecha,
             request.body.cantidad, 
@@ -43,6 +43,7 @@ class MetasController {
 
     public setPeticion( request : Request, response : Response){
         const data : any =  request.params.id
+        console.log(data)
         metasRepository.setPeticion(data).then(msg => {
             response.status(200).json({status : true , info : "OK"})
         },error => {
@@ -52,8 +53,11 @@ class MetasController {
     }
 
     public deleteMetas( request : Request, response : Response){
-        const id : number = parseInt(request.params.id,10);
-        metasRepository.deleteMetas(id).then(delateM => {
+
+
+        const data = request.params.id;
+        console.log(data)
+        metasRepository.deleteMetas(data).then(delateM => {
             response.status(200).json({status : true ,  info : "Meta Eliminada"})
         }, error =>{
             response.status(404).json({status : false});
@@ -61,6 +65,8 @@ class MetasController {
 
 
     }
+
+    
 
     public deleteMetasIndicador (request : Request, response : Response){
         const data : any = {
@@ -75,6 +81,65 @@ class MetasController {
             response.status(404).json({status : false});
         })
     }
+
+    public cambiarMetasIndicador( request : Request, response : Response){
+        const data : any  = { 
+            idnueva : request.body.idnueva, 
+            ideliminar : request.body.ideliminar
+        }
+        metasRepository.cambiarMetasIndicador(data).then(msg => {
+            response.status(200).json({status : true ,  info :msg});
+        }, error => { 
+            response.status(404).json({status : false});
+        })
+        
+    }
+
+
+    public editarMeta( request : Request, response : Response){
+        const generadorid : number =   Math.floor(Math.random() * 999999);
+        const idMetaActualizar : number = request.body.id;
+        let meta = new Metas(
+            generadorid, 
+            request.body.idindicador,
+            request.body.fecha, 
+            request.body.cantidad,
+            "Editar",
+            0,
+            request.body.id
+        );
+
+        metasRepository.editarMeta(meta, idMetaActualizar).then(msg =>{
+            response.status(200).json({status : true ,  info :msg});
+        }, error => {
+            response.status(404).json({status : false});
+        })
+
+
+        
+    }
+
+    public eliminarMetaEditado( request : Request, response : Response){
+        const data : any = request.params.id
+        metasRepository.eliminarMetaEditado(data).then(msg  => {
+            response.status(200).json({status : true , data : msg })
+        }, error => {
+            response.status(404).json({status :  false})
+        })
+    }
+
+    public eliminarMeta( request : Request, response : Response){
+        const data : any = request.params.id
+        metasRepository.eliminarMeta(data).then(msg  => {
+            response.status(200).json({status : true , data : msg })
+        }, error => {
+            response.status(404).json({status :  false})
+        })
+    }
+
+
+
+
 }
 
 

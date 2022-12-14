@@ -17,7 +17,7 @@ HistorialPeticionesModel.init({
     },
 
     id_imm : {
-        type : DataTypes.INTEGER,
+        type : DataTypes.STRING,
         allowNull: false
     },
 
