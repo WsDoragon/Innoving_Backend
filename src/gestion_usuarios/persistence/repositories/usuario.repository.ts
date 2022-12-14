@@ -29,8 +29,47 @@ class UsuarioRepository {
     }
 
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
-        let newUsuario: any = await UsuarioModel.create(Usuario);
 
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+        Usuario.contraseña = hashedPass;
+        //fin del hash
+
+        let newUsuario: any = await UsuarioModel.create(Usuario);
+        //Para enviar solicitud de crear contraseña a usuarios nuevos
+        const token = jwt.sign({id: Usuario.rut}, 'innovame1234', {expiresIn:"1h"});
+        newUsuario.update({
+            token: token
+        });
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.ethereal.email',
+            port: 587,
+            //service:"gmail",
+            auth:{
+                user: `${process.env.EMAIL_ADDRESS}`,
+                pass: `${process.env.EMAIL_PASSWORD}`,
+            }
+        });
+
+        const mailOptions={
+            from: `${process.env.EMAIL_FROM}`,
+            to: `${Usuario.correo}`,
+            subject: 'Enlace crear contrasela en tu cuenta de Innoving',
+            text:
+            `su enlace para crear la contraseña es:\nhttp://localhost:3000/resetPass/${Usuario.rut}/${token}`
+            
+        };
+
+        transporter.sendMail(mailOptions, (err, response) => {
+            if (err){
+                console.error ("Ha ocurrido un error: ", err);
+            } else {
+                console.log("respuesta:", response);
+                return("email para la recuperacion de contraseña ha sido enviado")
+            }
+        })
         return <Usuario> newUsuario;
 
     }
@@ -38,7 +77,14 @@ class UsuarioRepository {
     public async editUsuario(currentID: string, Usuario: Usuario): Promise<Usuario> {
         console.log("EDITAR USUARIO - DEBUG")
         console.log(currentID, Usuario)
-        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${Usuario.contraseña}" WHERE rut = "${currentID}"`
+
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+        Usuario.contraseña = hashedPass;
+        //fin del hash
+
+        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${hashedPass}" WHERE rut = "${currentID}"`
         , {type: persistence.QueryTypes.UPDATE});
         return <Usuario> editUsuario;
 
@@ -65,7 +111,14 @@ class UsuarioRepository {
             "status": Number,
             "roles": []
         }
-        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${creds.password}"`, {type: persistence.QueryTypes.SELECT})
+
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(creds.password).digest('hex');
+        console.log(hashedPass)
+        //fin del hash
+
+        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${hashedPass}"`, {type: persistence.QueryTypes.SELECT})
         
         if(usuario.length == 0){
             console.log("rut o contraseña erroneos")
@@ -276,13 +329,27 @@ class UsuarioRepository {
             throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula')
         }
 
-        const resetPassword : any = await UsuarioModel.update({contraseña: password, token:""}, {
+
+        //hasheamos
+        const sha512 = require('hash.js/lib/hash/sha/512');
+        let hashedPass=sha512().update(password).digest('hex');
+        //fin del hash
+
+
+        const resetPassword : any = await UsuarioModel.update({contraseña: hashedPass, token:""}, {
             where:{
                 rut: id,
                 token: tokenV
             }
         });
-        return resetPassword
+        if (resetPassword[0] === 0){
+            throw new Error('Contraseña no cambiada, rut o token no validos.')
+        }
+        else{
+            //console.log(resetPassword[0])
+            return resetPassword
+        }
+        
     }
 
 }
