@@ -9,7 +9,6 @@ class UsuariosRoute {
         this.router = Router();
         this.router.put('/edit', UsuarioController.editUsuario);
         this.router.post('/create', UsuarioController.addUsuario);
-        this.router.post('/createP', UsuarioController.addUsuarioP);
         this.router.get('/all',UsuarioController.getAllUsers);
         this.router.get('/allEnabled',UsuarioController.getEnabledUsers);
         this.router.get('/allDisabled',UsuarioController.getDisabledUsers);

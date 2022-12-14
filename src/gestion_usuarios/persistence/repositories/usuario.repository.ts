@@ -106,7 +106,7 @@ class UsuarioRepository {
             rol.push(j.name);
         }
         let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
-            
+        
             json.push(a);
         }
         return json;
