@@ -50,29 +50,37 @@ class UsuarioController {
 
         if (name || rut || cons || rol) {        
             
-            let text:String = "Faltan datos obligatorios: ";
-
+            let text:String = "Faltan campos por rellenar: ";
             if(name){
                 text = text + "Nombre - ";   
             }
+
             if(rut){
                 text = text + "Rut - ";
             }
-            if(cons){
-                text = text + "Contraseña - ";   
+            
+            if(request.body.roles != "4"){
+                if(cons){
+                    text = text + "Contraseña - ";   
+                }
+                if(rol){
+                    text = text + "Rol";
+                }
             }
-            if(rol){
-                text = text + "Rol";
+
+            else{
+                let d:String = request.body.contraseña.slice(0,2);
+                let m:String = request.body.contraseña.slice(2,-4);
+                let a:String = request.body.contraseña.slice(-4,request.body.contraseña.length);
+                //if()
             }
+
             
             if(text.slice(-3, text.length) == " - "){
                 text = text.slice(0,-3);
             }
 
             response.status(404).json({status: false, error: text}); 
-
-            
-            
 
 
         }         
