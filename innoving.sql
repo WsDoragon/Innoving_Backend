@@ -90,6 +90,7 @@ CREATE TABLE `metas` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+<<<<<<< HEAD
 CREATE TABLE `publicacion` (
   `publicacion_id` int NOT NULL AUTO_INCREMENT,
   `issn_doi` varchar(255) NOT NULL,
@@ -104,6 +105,70 @@ CREATE TABLE `publicacion` (
   `validado` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`publicacion_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8mb3;
+=======
+
+
+CREATE TABLE Variables (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  descripcion VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Indicadores_Variables (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_indicador INT(11) NOT NULL,
+  id_variable INT NOT NULL,
+  FOREIGN KEY (id_indicador) REFERENCES indicadores(NumeroIndicador),
+  FOREIGN KEY (id_variable) REFERENCES Variables(id)
+);
+
+CREATE TABLE Estados (estado VARCHAR(100) NOT NULL PRIMARY KEY);
+INSERT INTO Estados VALUES ("rechazado"), ("verificado");
+
+create table publicacion(
+    publicacion_id int not null AUTO_INCREMENT primary key,
+    issn_doi varchar(100) not null,
+    titulo varchar(100),
+    autores varchar(100),
+    revista varchar(100),
+    autores_extranjeros TINYINT(1),
+    indexacion varchar(100), 
+    anio varchar(100),
+    citaciones varchar(300),
+    clasificacion varchar(100),
+    disciplina varchar(100),
+    estado VARCHAR(100),
+    FOREIGN KEY (estado) REFERENCES Estados(estado)
+);
+
+
+CREATE TABLE Variables_Publicaciones (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  valor INT NOT NULL,
+  id_publicacion INT NOT NULL,
+  id_variable INT ,
+  FOREIGN KEY (id_publicacion) REFERENCES publicacion(publicacion_id),
+  FOREIGN KEY (id_variable) REFERENCES Variables(id)
+);
+
+
+
+
+
+
+create table archivo(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_fk_pub int(6),
+    id_fk_pro int(6),
+    nombre varchar(255),
+    ruta varchar(255),
+    foreign key(id_fk_pub) references publicacion(`publicacion_id`)
+);
+
+/*
+USUARIOS
+*/
+DROP TABLE IF EXISTS `rol`;
+>>>>>>> modificacion a la tabla publicaciones
 
 CREATE TABLE `rol` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -914,6 +979,7 @@ INSERT INTO `variables_publicaciones` (`id`, `valor`, `id_publicacion`, `id_vari
 
 
 
+<<<<<<< HEAD
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
@@ -921,3 +987,10 @@ INSERT INTO `variables_publicaciones` (`id`, `valor`, `id_publicacion`, `id_vari
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+=======
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES ('a-0','carlitos','torrez','carlitos@gmail.com',"1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75",1,NULL);
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+>>>>>>> modificacion a la tabla publicaciones
