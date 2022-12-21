@@ -45,7 +45,7 @@ class UsuarioController {
         let rut:Boolean = (request.body.rut == "" || request.body.rut == null || request.body.rut == undefined);
         let name:Boolean = (request.body.nombre == "" || request.body.nombre == null || request.body.nombre == undefined);
         let rol:Boolean = request.body.roles == "";
-        let correo:String = request.body.correo;
+        let correo:Boolean = request.body.correo == "";
 
         if (name || rut || rol || correo) {        
             
@@ -54,9 +54,7 @@ class UsuarioController {
                 text = text + "Nombre - ";   
             }
 
-            let cor:any = correo.match(/^([A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4})$/i)
-    
-            if(cor != correo){
+            if(correo){
                 text = text + "Correo - ";   
             }
 
