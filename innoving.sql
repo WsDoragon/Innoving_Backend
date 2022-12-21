@@ -69,6 +69,11 @@ CREATE TABLE Variables (
   descripcion VARCHAR(100) NOT NULL
 );
 
+INSERT INTO Variables VALUES 
+  (1,"numero de publicaciones"),
+  (2,"numero de publicaciones de ingenieria"),
+  (3,"numero de publicaciones con coautor extrangero");
+
 CREATE TABLE Indicadores_Variables (
   id INT PRIMARY KEY AUTO_INCREMENT,
   id_indicador INT(11) NOT NULL,
