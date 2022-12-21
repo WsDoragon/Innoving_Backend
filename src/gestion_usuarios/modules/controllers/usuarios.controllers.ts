@@ -45,13 +45,19 @@ class UsuarioController {
         let rut:Boolean = (request.body.rut == "" || request.body.rut == null || request.body.rut == undefined);
         let name:Boolean = (request.body.nombre == "" || request.body.nombre == null || request.body.nombre == undefined);
         let rol:Boolean = request.body.roles == "";
+        let correo:String = request.body.correo;
 
-
-        if (name || rut || rol) {        
+        if (name || rut || rol || correo) {        
             
             let text:String = "Faltan campos por rellenar: ";
             if(name){
                 text = text + "Nombre - ";   
+            }
+
+            let cor:any = correo.match(/^([A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4})$/i)
+    
+            if(cor != correo){
+                text = text + "Correo - ";   
             }
 
             if(rut){
@@ -65,23 +71,21 @@ class UsuarioController {
             }
 
             else{
-                let c:String = request.body.contraseña;
-                let d:String = c.slice(0,2);
-                let m:String = c.slice(2,-4);
-                let a:String = c.slice(-4,c.length);
-                let meses:String[] = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-
-                if(d.length != 2){
+                let c:string[] = request.body.contraseña.split("$");
+                
+                let d:string = c[0];
+                let m:string = c[1];
+                let a:string = c[2];
+                
+                if(parseInt(d) > 31 || isNaN(+d) || d.length == 0){
                     text = text + "Día - ";
                 }
 
-                console.log(meses.includes(m))
-                console.log(c, m)
-                if(meses.includes(m)){
+                if(m.length < 4){
                     text = text + "Mes - ";
                 }
 
-                if(a.length != 4){
+                if(parseInt(a) > 1930 || parseInt(a) < 2020 || isNaN(+a) || d.length == 0){
                     text = text + "Año";
                 }
             }
