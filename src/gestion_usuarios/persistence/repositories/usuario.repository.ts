@@ -31,10 +31,19 @@ class UsuarioRepository {
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
         const contemp = generate({ length: 8 }); 
         console.log("\n\n\n\n", contemp, "\n\n\n\n");
+
         //hasheamos
-        const sha512 = require('hash.js/lib/hash/sha/512');
-        let hashedPass=sha512().update(contemp).digest('hex');
-        Usuario.contraseña = hashedPass;
+        let testdata = Usuario.contraseña;
+        const found = testdata.match(/[0-9]{2}[a-zA-Z]{4,9}[0-9]{4}/g)
+        console.log(found);
+
+        console.log(testdata);
+        if(!found){
+            console.log("no se encontro algo >:c");
+            const sha512 = require('hash.js/lib/hash/sha/512');
+            let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+            Usuario.contraseña = hashedPass;
+        }
         //fin del hash
 
         let newUsuario: any = await UsuarioModel.create(Usuario);
