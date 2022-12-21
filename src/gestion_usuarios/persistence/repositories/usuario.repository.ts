@@ -29,9 +29,6 @@ class UsuarioRepository {
     }
 
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
-        const contemp = generate({ length: 8 }); 
-        console.log("\n\n\n\n", contemp, "\n\n\n\n");
-
         //hasheamos
         let testdata = Usuario.contraseña;
         const found = testdata.match(/[0-9]{2}[a-zA-Z]{4,9}[0-9]{4}/g)
@@ -88,13 +85,7 @@ class UsuarioRepository {
         console.log("EDITAR USUARIO - DEBUG")
         console.log(currentID, Usuario)
 
-        //hasheamos
-        const sha512 = require('hash.js/lib/hash/sha/512');
-        let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
-        Usuario.contraseña = hashedPass;
-        //fin del hash
-
-        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${hashedPass}" WHERE rut = "${currentID}"`
+        let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${Usuario.contraseña}" WHERE rut = "${currentID}"`
         , {type: persistence.QueryTypes.UPDATE});
         return <Usuario> editUsuario;
 
