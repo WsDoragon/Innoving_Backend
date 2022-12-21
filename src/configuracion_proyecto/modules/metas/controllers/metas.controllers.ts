@@ -97,6 +97,7 @@ class MetasController {
 
 
     public editarMeta( request : Request, response : Response){
+        console.log("hola mundo ")
         const generadorid : number =   Math.floor(Math.random() * 999999);
         const idMetaActualizar : number = request.body.id;
         let meta = new Metas(

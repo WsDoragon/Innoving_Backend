@@ -1,4 +1,4 @@
-import { Model, where } from "sequelize";
+import { Model, where, Sequelize } from "sequelize";
 
 import { Metas } from "../../../entities/metas/metas";
 import persistence from "../../../../config/persistence";
@@ -13,7 +13,9 @@ const sHistorial = servicios
 class MetasRepository {
 
     public async getMetas() : Promise<Array<Metas>>{
-        let metas : Array<any> = await MetasModel.findAll();
+        let metas : Array<any> = await MetasModel.findAll({
+            order : Sequelize.literal("Aprobado ASC" )
+        });
 
         if (metas.length === 0 ){
             throw new Error();

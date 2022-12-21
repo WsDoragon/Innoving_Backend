@@ -1,4 +1,4 @@
-import { Model } from "sequelize";
+import { Model, Sequelize } from "sequelize";
 import { Eje } from "../../../entities/eje/eje";
 import persistence from "../../../../config/persistence";
 
@@ -7,7 +7,9 @@ class EjeRepository{
 
     public async getEjes() : Promise<Array<Eje>>  {
 
-        let ejes : Array<any> = await EjeModel.findAll();
+        let ejes : Array<any> = await EjeModel.findAll({
+            order : Sequelize.literal("id ASC" )
+        });
         if (ejes.length == 0 ){
             throw new Error(); 
 

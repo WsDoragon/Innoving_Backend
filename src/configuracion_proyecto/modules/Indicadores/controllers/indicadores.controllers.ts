@@ -73,6 +73,9 @@ class IndicadorController {
     }
 
     public editarIndicador(request : Request ,response : Response){
+        console.log("hola");
+        const id : string = request.body.id;
+        console.log(id);
         let sid : string = request.body.NumeroIndicador;
         let numeroIndicador : number = parseInt(sid,10); 
         let indicador = new Indicador(
@@ -92,14 +95,30 @@ class IndicadorController {
             request.body.id_editado,
             request.body.Descripcion
         );
+        indicadorRepository.editarIndicador(id, indicador).then(msg  => {
+            response.status(200).json({status : true , data : msg })
+        }, error => {
+            response.status(404).json({status :  false})
+        })
     }
 
     public eliminarIndicadorEditado(request : Request ,response : Response){
+        const data : any  = request.params.id;
+        indicadorRepository.eliminarIndicadorEditado(data).then(msg  => {
+            response.status(200).json({status : true , data : msg })
+        }, error => {
+            response.status(404).json({status :  false})
+        })
 
     }
 
     public eliminarIndicador(request : Request ,response : Response){
-        
+        const data : any = request.params.id;
+        indicadorRepository.eliminarIndicador(data).then(msg  => {
+            response.status(200).json({status : true , data : msg })
+        }, error => {
+            response.status(404).json({status :  false})
+        })    
     }
 
 

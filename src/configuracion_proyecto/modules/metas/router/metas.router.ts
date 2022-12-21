@@ -10,7 +10,7 @@ class MetasRouter {
         this.router.put("/setaprobado/:id",metasControllers.setAprobado);
         this.router.put("/setpeticion/:id",metasControllers.setPeticion);
         this.router.put("/deletemetas/:id",metasControllers.deleteMetas);
-        this.router.put("/editarmeta/:id",metasControllers.editarMeta);
+        this.router.put("/editarmeta",metasControllers.editarMeta);
         this.router.delete('/eliminarmetaeditado/:id',metasControllers.eliminarMetaEditado);
         this.router.delete('/eliminarmeta/:id',metasControllers.eliminarMeta);
     }

@@ -11,7 +11,7 @@ import indicadoresModule from './src/configuracion_proyecto/modules/Indicadores/
 import metasModule from './src/configuracion_proyecto/modules/metas/metas.module';
 import ejesModule from './src/configuracion_proyecto/modules/ejes/ejes.module';
 import historialPeticionModule from './src/configuracion_proyecto/modules/historialPeticiones/historialPeticion.module';
-
+import variableModule from './src/configuracion_proyecto/modules/variables/variable.module';
 class App {
   public server;
   private port;
@@ -45,6 +45,7 @@ class App {
     this.server.use(metasModule.routes);
     this.server.use(ejesModule.router);
     this.server.use(historialPeticionModule.router);
+    this.server.use(variableModule.router);
 
     
   } 

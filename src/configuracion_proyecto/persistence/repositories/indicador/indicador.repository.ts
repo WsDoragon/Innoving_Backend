@@ -1,5 +1,5 @@
 import { triggerAsyncId } from "async_hooks";
-import { Model } from "sequelize";
+import { Model , Sequelize} from "sequelize";
 import { Request, Response } from 'express';
 import { now } from "sequelize/types/utils";
 
@@ -27,7 +27,9 @@ class IndicadoreRepository {
     }
 
     public async getIndicadores() :  Promise<Array<Indicador>>{
-        let indicadores : Array<any> = await IndicadorModel.findAll();
+        let indicadores : Array<any> = await IndicadorModel.findAll({
+            order : Sequelize.literal("Aprobado DESC" )
+        });
 
         if (indicadores.length == 0 ) {
             throw new Error();
@@ -122,7 +124,7 @@ class IndicadoreRepository {
         }
         indicador.set({
             Aprobado : 0, 
-            peticion : "Eliminar"
+            Peticion : "Eliminar"
 
         })
         indicador.save();
@@ -139,7 +141,7 @@ class IndicadoreRepository {
         const desactivarMeta : any = await  persistence.query(ADD_QUERY, {type: persistence.QueryTypes.UPDATE});
         
     
-        return (<string> "ok")
+        return ("ok")
     } 
 
     public async  eliminarIndicadorEditado(data : any){
@@ -166,6 +168,8 @@ class IndicadoreRepository {
                 estado: 'Rechazado', 
                 fecha: now 
             }  }as never, 0 as never );
+
+        return "ok"; 
 
     }
 
