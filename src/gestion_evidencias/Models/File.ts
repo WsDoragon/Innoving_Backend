@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../sequelize";
+import sequelize from "../../config/persistence";
 // create table archivo(
 //     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 //     id_fk_pub int(6),

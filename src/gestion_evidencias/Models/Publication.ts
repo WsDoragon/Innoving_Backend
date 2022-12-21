@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../sequelize";
+import sequelize from "../../config/persistence";
 
 // create table publicacion(
 //     publicacion_id int not null AUTO_INCREMENT primary key,
