@@ -77,25 +77,19 @@ CREATE TABLE Indicadores_Variables (
   FOREIGN KEY (id_variable) REFERENCES Variables(id)
 );
 
-CREATE TABLE Estados (estado VARCHAR(100) NOT NULL PRIMARY KEY);
-INSERT INTO Estados VALUES ("rechazado"), ("verificado");
-
 create table publicacion(
     publicacion_id int not null AUTO_INCREMENT primary key,
-    issn_doi varchar(100) not null,
+	issn_doi varchar(100) not null,
     titulo varchar(100),
     autores varchar(100),
     revista varchar(100),
     autores_extranjeros TINYINT(1),
+    validado TINYINT(1),
     indexacion varchar(100), 
-    anio varchar(100),
-    citaciones varchar(300),
+    anio date,
     clasificacion varchar(100),
-    disciplina varchar(100),
-    estado VARCHAR(100),
-    FOREIGN KEY (estado) REFERENCES Estados(estado)
+    disciplina varchar(100)
 );
-
 
 CREATE TABLE Variables_Publicaciones (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -105,11 +99,6 @@ CREATE TABLE Variables_Publicaciones (
   FOREIGN KEY (id_publicacion) REFERENCES publicacion(publicacion_id),
   FOREIGN KEY (id_variable) REFERENCES Variables(id)
 );
-
-
-
-
-
 
 create table archivo(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
