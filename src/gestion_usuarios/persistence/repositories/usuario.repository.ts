@@ -1,7 +1,7 @@
 import { Usuario } from "../../entities/usuario";
 import persistence from "../../../config/persistence";
 import UsuarioModel from "../models/usuario.model";
-
+import { generate, generateMultiple, validate } from '@wcj/generate-password';
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 import usuariosModule from "../../modules/usuarios.module";
@@ -29,10 +29,11 @@ class UsuarioRepository {
     }
 
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
-
+        const contemp = generate({ length: 8 }); 
+        console.log("\n\n\n\n", contemp, "\n\n\n\n");
         //hasheamos
         const sha512 = require('hash.js/lib/hash/sha/512');
-        let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+        let hashedPass=sha512().update(contemp).digest('hex');
         Usuario.contraseña = hashedPass;
         //fin del hash
 
