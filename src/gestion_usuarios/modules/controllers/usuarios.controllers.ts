@@ -224,7 +224,7 @@ class UsuarioController {
                 //console.log(res)
                 response.status(200).json({status: true, data: res})
             }, error =>{
-                //console.log(error.message)
+                console.log(error.message)
                 response.status(404).json({status:false, a: error.message})
             })
         //console.log("llega consulta de resetPassword: " + request.body.userPassword)
