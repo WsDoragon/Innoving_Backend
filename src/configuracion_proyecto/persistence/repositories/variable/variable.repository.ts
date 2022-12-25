@@ -26,34 +26,82 @@ class VariableRepository{
 
     public async M26(req : any ){
 
-        
-        const TASK_QUERY = `SELECt SUM(valor) AS SUMA FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 3 AND P.anio BETWEEN "${req.body.fecha1}" AND "${req.body.fecha2}";`
+        let meta ; 
+        const TASK_QUERY = `SELECT cantidad FROM metas WHERE idindicador = "M26" AND fecha = ${req.body.anio}`; 
         const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.GET});
-        return GetVariable3[0][0]["SUMA"];
+        meta =  GetVariable3; 
+        console.log(GetVariable3)
+        const TASK_QUERY2 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 3 AND YEAR(P.anio) = ${req.body.anio} GROUP BY MONTH(P.anio)`; 
+
+        const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.GET});
+
+        console.log(GetVariable4)
+
+        return [meta,GetVariable4]
     }
 
     public async M25(req : any ){
-        const TASK_QUERY = `SELECt SUM(valor) FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND P.anio BETWEEN "${req.body.fecha1}" AND "${req.body.fecha2}";`
+        let meta ; 
+        const TASK_QUERY = `SELECT cantidad FROM metas WHERE idindicador = "M25" AND fecha = ${req.body.anio};`; 
         const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.GET});
-        return GetVariable3[0][0]["SUM(valor)"];
+        meta =  GetVariable3; 
+
+        const TASK_QUERY2 = ` SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = ${req.body.anio} GROUP BY MONTH(P.anio)`; 
+        const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.GET});
+
+        return [meta,GetVariable4]
         
     }
 
     public async M49(req : any ){
 
-        let  extranjero;
-        const TASK_QUERY = `SELECt SUM(valor) FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 1 AND P.anio BETWEEN "${req.body.fecha1}" AND "${req.body.fecha2}";`
-        const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.GET});
-        console.log(GetVariable3[0])
-        extranjero = GetVariable3[0][0]["SUM(valor)"];
+        let  metas;
+        const TASK_QUERY3 = `SELECT cantidad FROM metas WHERE idindicador = "M49" AND fecha = "${req.body.anio}";`
+        const GetVariable3 : any  = await persistence.query(TASK_QUERY3, {type: persistence.QueryTypes.GET});
+        metas  = GetVariable3;
+        //---------------------------------------------------------------------------------------------------//
+        let extranjeros;
+        const TASK_QUERY4 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 1 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio);`
+        const GetVariable4 : any  = await persistence.query(TASK_QUERY4, {type: persistence.QueryTypes.GET});
+        extranjeros = GetVariable4; 
+        //----------------------------------------------------------------------------------------------------//
 
-        const TASK_QUERY2 = `SELECt SUM(valor) FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND P.anio BETWEEN "${req.body.fecha1}" AND "${req.body.fecha2}";`
-        const GetVariable4 : any  = await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.GET});
-        console.log(GetVariable4[0][0]["SUM(valor)"])
-        let porcentaje = (extranjero/GetVariable4[0][0]["SUM(valor)"] * 100).toString();
+        const TASK_QUERY5 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio);`
+        const GetVariable5 : any  = await persistence.query(TASK_QUERY5, {type: persistence.QueryTypes.GET});
 
-        return porcentaje
-}
+        for( let i= 0; i<12;  i++ ){
+            try {
+                if(extranjeros[i]["Mes"] != i+1){
+                    extranjeros.splice(i,0,{"Mes": i+1, "Valor": "0"});
+
+                }
+            } catch (error) {
+                extranjeros.splice(i,0,{"Mes": i+1, "Valor": "0"})
+                
+            }
+        }
+        for( let i= 0; i<12;  i++ ){
+            try {
+                if(GetVariable5[i]["Mes"] != i+1){
+                    GetVariable5.splice(i,0,{"Mes": i+1, "Valor": "1"});
+                }
+                
+            } catch (error) {
+                GetVariable5.splice(i,0,{"Mes": i+1, "Valor": "1"});           
+            }
+        }
+
+        let porcentaje = [];
+        for(var i = 0; i< 12; i++){
+            porcentaje.push({"Mes": i+1, "Valor": (extranjeros[i]["Valor"]/GetVariable5[i]["Valor"])*100})
+        }
+
+        return([metas,porcentaje])
+        
+
+    }
+
+        
         
     
 
