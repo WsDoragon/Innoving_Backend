@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { Usuario } from '../../entities/usuario';
 import usuarioRepository from '../../persistence/repositories/usuario.repository';
 import UsuarioRepository from '../../persistence/repositories/usuario.repository';
+import jwtController from './jwt.controller';
+import mailerRepository from '../../persistence/repositories/mailer.repository';
 
 class UsuarioController {
 
@@ -209,8 +211,14 @@ class UsuarioController {
         }
         else{
             console.log("Solicitud correcta: " + request.body.email)
-            UsuarioRepository.forgotPassword(request.body.email).then( res =>{
-                response.status(200).json({status: true, data: "solicitud cargada"})
+            let token = jwtController.createToken(request.body.email)
+            UsuarioRepository.forgotPassword(request.body.email, token).then( res =>{
+                mailerRepository.forgotEmail(request.body.email, token, res.rut).then( res => {
+                    response.status(200).json({status: true, data: "solicitud cargada"})
+                }, error => {
+                    response.status(404).json({status:false, mensaje:"Error en su consulta, Correo no enviado"})
+                })
+                
             }, error=>{
                 response.status(404).json({status:false, mensaje:"Error en su consulta, usuario no existe o error en base de datos"})
             });
@@ -218,16 +226,22 @@ class UsuarioController {
         }
     }
 
+    //Refactoring aplicado
     public resetPassword1(request: Request, response: Response) {
-        usuarioRepository.resetPassword(request.params.id, request.params.token, request.body.password)
-            .then(res =>{
-                //console.log(res)
-                response.status(200).json({status: true, data: res})
-            }, error =>{
-                console.log(error.message)
-                response.status(404).json({status:false, a: error.message})
-            })
-        //console.log("llega consulta de resetPassword: " + request.body.userPassword)
+        jwtController.validateToken(request.body.token)
+            .then( res => {
+                usuarioRepository.resetPassword(request.params.id, request.params.token, request.body.password, res)
+                    .then(res =>{
+                        //console.log(res)
+                        response.status(200).json({status: true, data: res})
+                    }, error =>{
+                        console.log(error.message)
+                        response.status(404).json({status:false, a: error.message})
+                    })
+            }, error => {
+                //console.log(error.message)
+                response.status(404).json({status:false, message: error.message})
+        })
     }
 
 }

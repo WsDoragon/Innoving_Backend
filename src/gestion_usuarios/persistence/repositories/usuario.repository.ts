@@ -267,10 +267,9 @@ class UsuarioRepository {
 
     }
 
-    public async forgotPassword(email: string){
+    //Refactoring aplicado
+    public async forgotPassword(email: string, token:string){
         console.log(email)
-
-        
 
         const user = await UsuarioModel.findOne({
             where: {
@@ -283,62 +282,20 @@ class UsuarioRepository {
         }
         let test = user.toJSON()
         
-        
-        const token = jwt.sign({id: test.rut}, 'innovame1234', {expiresIn:"1h"});
         user.update({
             token: token
         });
-
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            //service:"gmail",
-            auth:{
-                user: `${process.env.EMAIL_ADDRESS}`,
-                pass: `${process.env.EMAIL_PASSWORD}`,
-            }
-        });
-
-
-        const emailPort = process.env.EMAIL_PORT || 3000;
-
-        const mailOptions={
-            from: `${process.env.EMAIL_FROM}`,
-            to: `${test.correo}`,
-            subject: 'Enlace para recuperar tu cuenta de Innoving',
-            text:
-            `su enlace para recuperar la contraseña es:\nhttp://localhost:3000/resetPass/${test.rut}/${token}`
-            
-        };
-
-        transporter.sendMail(mailOptions, (err, response) => {
-            if (err){
-                console.error ("Ha ocurrido un error: ", err);
-            } else {
-                console.log("respuesta:", response);
-                return("email para la recuperacion de contraseña ha sido enviado")
-            }
-        })
+        return(test)
 
     }
 
-    public async resetPassword(id: string, tokenV: string, password:string){
+    public async resetPassword(id: string, tokenV: string, password:string, verifyToken:any){
         let regExPassword = /^(?=.*[A-Z])(?=.*[0123456789])[A-Za-z\d@$!%*?&#]{8,16}$/;
             console.log
         if (!regExPassword.test(password)){
             console.log("contraseña no cumple estandares")
             throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula')
         }
-        //let verifyToken : any = jwt.verify(tokenV, `${process.env.JWT_SECRET}`)
-        let verifyToken : any = jwt.verify(tokenV, `${process.env.JWT_SECRET}`, (err, user) => {
-            if (err){
-                //console.log("Token no valido para consultas, token expirado o incorrecto")
-                throw new Error('Token no valido para consultas, token expirado o incorrecto.')
-            } else {
-                return user
-            }
-            
-        })
 
         //console.log(verifyToken)
 
