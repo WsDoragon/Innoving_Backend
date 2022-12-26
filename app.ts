@@ -8,6 +8,14 @@ import rolUsuariosModule from "./src/gestion_usuarios/modules/rol_usuario.module
 import fileRoutes from "./src/gestion_evidencias/routes/file-router";
 import pubRoutes from "./src/gestion_evidencias/routes/pub-router";
 
+
+//import IndicadorModel from './src/configuracion_proyecto/persistence/models/indicador/Indicador.model';
+import indicadoresModule from './src/configuracion_proyecto/modules/Indicadores/indicadores.module';
+//import MetasModel from './src/configuracion_proyecto/persistence/models/metas/Metas.model';
+import metasModule from './src/configuracion_proyecto/modules/metas/metas.module';
+import ejesModule from './src/configuracion_proyecto/modules/ejes/ejes.module';
+import historialPeticionModule from './src/configuracion_proyecto/modules/historialPeticiones/historialPeticion.module';
+import variableModule from './src/configuracion_proyecto/modules/variables/variable.module';
 class App {
   public server;
   private port;
@@ -37,11 +45,22 @@ class App {
     //this.server.use(UserModule.routes);
     this.server.use(usuariosModule.routes);
     this.server.use(rolUsuariosModule.routes);
+
     // evidencias
     this.server.use("/api", pubRoutes);
     this.server.use("/api", fileRoutes);
     // end evidencias
-  }
-}
+  
 
+    this.server.use(indicadoresModule.routes);
+    this.server.use(metasModule.routes);
+    this.server.use(ejesModule.router);
+    this.server.use(historialPeticionModule.router);
+    this.server.use(variableModule.router);
+
+    
+  } 
+
+
+}
 export default new App();
