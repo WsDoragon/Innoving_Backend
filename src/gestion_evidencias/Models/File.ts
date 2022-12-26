@@ -20,7 +20,7 @@ const File = sequelize.define(
       primaryKey: true,
     },
     idFkPub: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       field: "id_fk_pub",
     },
     nombre: {
