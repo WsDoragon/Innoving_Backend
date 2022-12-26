@@ -41,7 +41,7 @@ class UsuarioController {
             response.status(404).json({status: false});
         });
     }
-
+    // Aplicar refactoring JWT y Nodemailer (Como en resetpassword)
     public addUsuario(request: Request, response: Response) {
 
         let rut:Boolean = (request.body.rut == "" || request.body.rut == null || request.body.rut == undefined);

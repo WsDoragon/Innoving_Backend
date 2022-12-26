@@ -27,7 +27,7 @@ class UsuarioRepository {
         }
 
     }
-
+    //aplicar refactoring (nodemailer y jwt)
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
         //hasheamos
         let testdata = Usuario.contraseña;
@@ -145,7 +145,8 @@ class UsuarioRepository {
         }
         
     }
-
+    
+    //Revisar si se esta utilizando
     public async getAll(){
         let json:any[] = [];
         const result = await persistence.query(`SELECT * FROM usuario`, {type: persistence.QueryTypes.SELECT});
@@ -175,7 +176,7 @@ class UsuarioRepository {
         for (let i of result){
             let rol:any = []
 
-        let a = {"rut": i.rut, "nombre": i.nombre, "apellido":i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
+            let a = {"rut": i.rut, "nombre": i.nombre + " " + i.apellido, "correo": i.correo, "roles": rol, "status":i.status};
             
             json.push(a);
         }
@@ -210,7 +211,7 @@ class UsuarioRepository {
     }
 
 
-
+    // Revisar si se estan utilizando
     public async getAllEnabled(){
         let json:any[] = [];
         const result = await persistence.query(`SELECT * FROM usuario WHERE status=1`, {type: persistence.QueryTypes.SELECT});
@@ -231,6 +232,7 @@ class UsuarioRepository {
         return json;
     }
 
+    // Revisar si se estan utilizando
     public async getDisabled(soloInnoving: string){
         let json:any[] = [];
         let result:any
@@ -267,7 +269,7 @@ class UsuarioRepository {
 
     }
 
-    //Refactoring aplicado
+    //Refactoring aplicado (NodeMailer y JWT fuera ahora)
     public async forgotPassword(email: string, token:string){
         console.log(email)
 
@@ -289,6 +291,7 @@ class UsuarioRepository {
 
     }
 
+    //Refactoring aplicado (JWT fuera ahora, con verificacion)
     public async resetPassword(id: string, tokenV: string, password:string, verifyToken:any){
         let regExPassword = /^(?=.*[A-Z])(?=.*[0123456789])[A-Za-z\d@$!%*?&#]{8,16}$/;
             console.log
