@@ -324,31 +324,47 @@ class UsuarioRepository {
 
     public async resetPassword(id: string, tokenV: string, password:string){
         let regExPassword = /^(?=.*[A-Z])(?=.*[0123456789])[A-Za-z\d@$!%*?&#]{8,16}$/;
-
+            console.log
         if (!regExPassword.test(password)){
             console.log("contraseña no cumple estandares")
             throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula')
         }
-
-
-        //hasheamos
-        const sha512 = require('hash.js/lib/hash/sha/512');
-        let hashedPass=sha512().update(password).digest('hex');
-        //fin del hash
-
-
-        const resetPassword : any = await UsuarioModel.update({contraseña: hashedPass, token:""}, {
-            where:{
-                rut: id,
-                token: tokenV
+        //let verifyToken : any = jwt.verify(tokenV, `${process.env.JWT_SECRET}`)
+        let verifyToken : any = jwt.verify(tokenV, `${process.env.JWT_SECRET}`, (err, user) => {
+            if (err){
+                //console.log("Token no valido para consultas, token expirado o incorrecto")
+                throw new Error('Token no valido para consultas, token expirado o incorrecto.')
+            } else {
+                return user
             }
-        });
-        if (resetPassword[0] === 0){
-            throw new Error('Contraseña no cambiada, rut o token no validos.')
-        }
-        else{
-            //console.log(resetPassword[0])
-            return resetPassword
+            
+        })
+
+        //console.log(verifyToken)
+
+        if (verifyToken.id){
+            console.log("se logro")
+            //hasheamos
+            const sha512 = require('hash.js/lib/hash/sha/512');
+            let hashedPass=sha512().update(password).digest('hex');
+            //fin del hash
+
+
+            const resetPassword : any = await UsuarioModel.update({contraseña: hashedPass, token:""}, {
+                where:{
+                    rut: id,
+                    token: tokenV
+                }
+            });
+            //console.log(resetPassword)
+            if (resetPassword[0] === 0){
+                throw new Error('Contraseña no cambiada, rut o token no validos.')
+            }
+            else{
+                //console.log(resetPassword[0])
+                return resetPassword
+            }
+            
         }
         
     }
