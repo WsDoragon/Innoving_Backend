@@ -4,6 +4,7 @@ import cors from "cors";
 
 //import usuariosModule from './src/modules/users/gestion_usuarios/usuarios.module';
 import usuariosModule from "./src/gestion_usuarios/modules/usuarios.module";
+
 import rolUsuariosModule from "./src/gestion_usuarios/modules/rol_usuario.module";
 import fileRoutes from "./src/gestion_evidencias/routes/file-router";
 import pubRoutes from "./src/gestion_evidencias/routes/pub-router";
