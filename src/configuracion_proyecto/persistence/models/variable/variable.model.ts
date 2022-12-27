@@ -31,7 +31,7 @@ VariableModel.init({
 
 
 }, {
-    tableName : "Variable_Publicaciones",
+    tableName : "Variable_publicaciones",
     timestamps: false,
     sequelize : persistence
 })
