@@ -36,7 +36,6 @@ class UsuarioRepository {
 
         console.log(testdata);
         if(!found){
-            console.log("no se encontro algo >:c");
             const sha512 = require('hash.js/lib/hash/sha/512');
             let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
             Usuario.contraseña = hashedPass;
@@ -114,10 +113,18 @@ class UsuarioRepository {
         }
 
         //hasheamos
-        const sha512 = require('hash.js/lib/hash/sha/512');
-        let hashedPass=sha512().update(creds.password).digest('hex');
-        console.log(hashedPass)
+        let testdata = creds.password;
+        const found = testdata.match(/[0-9]{2}[a-zA-Z]{4,9}[0-9]{4}/g)
+        console.log(found);
+
+        console.log(testdata);
+        if(!found){
+            const sha512 = require('hash.js/lib/hash/sha/512');
+            let hashedPass=sha512().update(creds.password).digest('hex');
+            creds.password = hashedPass;
+        }
         //fin del hash
+
 
         const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${hashedPass}"`, {type: persistence.QueryTypes.SELECT})
         
