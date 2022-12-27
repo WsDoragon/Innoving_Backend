@@ -31,13 +31,18 @@ class VariableRepository{
         const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.SELECT});
         meta =  GetVariable3; 
         console.log(GetVariable3)
-        const TASK_QUERY2 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 3 AND YEAR(P.anio) = ${req.body.anio} GROUP BY MONTH(P.anio)`; 
+        const TASK_QUERY2 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 3 AND YEAR(P.anio) = ${req.body.anio} GROUP BY MONTH(P.anio) ORDER BY Mes`; 
 
         const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.SELECT});
-
+        
+        
+        console.log(GetVariable4)
         for(let i = 0; i<12; i++){
+            
             try {
                 if(GetVariable4[i]["Mes"] != i+1){
+                    
+
                     GetVariable4.splice(i,0,{"Mes": i+1, "Valor": "0"});
                 }
             } catch (error) {
@@ -55,12 +60,13 @@ class VariableRepository{
         const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.SELECT});
         meta =  GetVariable3; 
 
-        const TASK_QUERY2 = ` SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = ${req.body.anio} GROUP BY MONTH(P.anio)`; 
+        const TASK_QUERY2 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio) ORDER BY Mes;`
         const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.SELECT});
 
         for(let i = 0; i<12; i++){
             try {
                 if(GetVariable4[i]["Mes"] != i+1){
+                    console.log(GetVariable4[i]["Mes"])
                     GetVariable4.splice(i,0,{"Mes": i+1, "Valor": "0"});
 
                 }
@@ -82,18 +88,18 @@ class VariableRepository{
         metas  = GetVariable3;
         //---------------------------------------------------------------------------------------------------//
         let extranjeros;
-        const TASK_QUERY4 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 1 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio);`
+        const TASK_QUERY4 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 1 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio)  ORDER BY Mes ;`
         const GetVariable4 : any  = await persistence.query(TASK_QUERY4, {type: persistence.QueryTypes.SELECT});
         extranjeros = GetVariable4; 
         //----------------------------------------------------------------------------------------------------//
 
-        const TASK_QUERY5 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio);`
+        const TASK_QUERY5 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio) ORDER BY Mes ;`
         const GetVariable5 : any  = await persistence.query(TASK_QUERY5, {type: persistence.QueryTypes.SELECT});
 
         for( let i= 0; i<12;  i++ ){
             try {
-                if(extranjeros[i]["Mes"] != i+1){
-                    extranjeros.splice(i,0,{"Mes": i+1, "Valor": "0"});
+                if(extranjeros[i]["Mes"] != i+1){ 
+                    extranjeros.splice(i,0,{"Mes": i+1, "Valor": "0"});  
 
                 }
             } catch (error) {
