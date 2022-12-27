@@ -93,13 +93,15 @@ class MetasRepository {
     public async setPeticion(data : any ){
         const myArray = data.split("-");
         console.log(myArray);
-        const id: number  =   parseInt(myArray[0],10);
+        //const id: number  =   parseInt(myArray[0],10);
+        const id :string = myArray[0]
         const fecha : string = myArray[1];
         console.log(fecha)
+        console.log(id)
         const meta : any = await MetasModel.findOne({
-            where : {id}
+            where : {idindicador : id}
         });
-        
+        //console.log(meta)
         if(!meta){
             throw new Error();
         }
@@ -110,7 +112,10 @@ class MetasRepository {
             fecha : fecha
         })
         console.log(meta.Peticion)
-        meta.seve()
+        console.log(meta.Aprobado)
+        meta.save()
+        return "ok"
+        
         
     }
 

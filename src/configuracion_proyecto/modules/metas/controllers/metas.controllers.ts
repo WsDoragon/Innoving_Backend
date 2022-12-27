@@ -43,7 +43,7 @@ class MetasController {
 
     public setPeticion( request : Request, response : Response){
         const data : any =  request.params.id
-        console.log(data)
+        //console.log(data)
         metasRepository.setPeticion(data).then(msg => {
             response.status(200).json({status : true , info : "OK"})
         },error => {
