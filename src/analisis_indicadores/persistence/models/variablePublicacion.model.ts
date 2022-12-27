@@ -25,7 +25,7 @@ VariablePublicacionModel.init({
         allowNull: false
     }
 },{
-    tableName: 'Variables_Publicaciones',
+    tableName: 'Variable_Publicaciones',
     timestamps: false,
     sequelize: persistence
 })
