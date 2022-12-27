@@ -6,10 +6,10 @@ class VariableRouter{
     constructor(){
         this.router = Router(); 
         this.router.post("/add",variableControllers.addVariables);
-        this.router.get("/M26", variableControllers.smj);
-        this.router.get("/M25", variableControllers.M25);
-        this.router.get("/M49", variableControllers.M49);
-        this.router.get("/prueba", variableControllers.prueba)
+        this.router.post("/M26", variableControllers.smj);
+        this.router.post("/M25", variableControllers.M25);
+        this.router.post("/M49", variableControllers.M49);
+        this.router.post("/prueba", variableControllers.prueba)
     }
 
 }
