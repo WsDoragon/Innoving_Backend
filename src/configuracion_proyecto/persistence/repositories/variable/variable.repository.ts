@@ -28,14 +28,23 @@ class VariableRepository{
 
         let meta ; 
         const TASK_QUERY = `SELECT cantidad FROM metas WHERE idindicador = "M26" AND fecha = ${req.body.anio}`; 
-        const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.GET});
+        const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.SELECT});
         meta =  GetVariable3; 
         console.log(GetVariable3)
         const TASK_QUERY2 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 3 AND YEAR(P.anio) = ${req.body.anio} GROUP BY MONTH(P.anio)`; 
 
-        const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.GET});
+        const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.SELECT});
 
-        console.log(GetVariable4)
+        for(let i = 0; i<12; i++){
+            try {
+                if(GetVariable4[i]["Mes"] != i+1){
+                    GetVariable4.splice(i,0,{"Mes": i+1, "Valor": "0"});
+                }
+            } catch (error) {
+                GetVariable4.splice(i,0,{"Mes": i+1, "Valor": "0"});
+                
+            }
+        }
 
         return [meta,GetVariable4]
     }
@@ -43,11 +52,23 @@ class VariableRepository{
     public async M25(req : any ){
         let meta ; 
         const TASK_QUERY = `SELECT cantidad FROM metas WHERE idindicador = "M25" AND fecha = ${req.body.anio};`; 
-        const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.GET});
+        const GetVariable3 : any  = await persistence.query(TASK_QUERY, {type: persistence.QueryTypes.SELECT});
         meta =  GetVariable3; 
 
         const TASK_QUERY2 = ` SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = ${req.body.anio} GROUP BY MONTH(P.anio)`; 
-        const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.GET});
+        const GetVariable4 =  await persistence.query(TASK_QUERY2, {type: persistence.QueryTypes.SELECT});
+
+        for(let i = 0; i<12; i++){
+            try {
+                if(GetVariable4[i]["Mes"] != i+1){
+                    GetVariable4.splice(i,0,{"Mes": i+1, "Valor": "0"});
+
+                }
+            } catch (error) {
+                GetVariable4.splice(i,0,{"Mes": i+1, "Valor": "0"});
+                
+            }
+        }
 
         return [meta,GetVariable4]
         
@@ -57,17 +78,17 @@ class VariableRepository{
 
         let  metas;
         const TASK_QUERY3 = `SELECT cantidad FROM metas WHERE idindicador = "M49" AND fecha = "${req.body.anio}";`
-        const GetVariable3 : any  = await persistence.query(TASK_QUERY3, {type: persistence.QueryTypes.GET});
+        const GetVariable3 : any  = await persistence.query(TASK_QUERY3, {type: persistence.QueryTypes.SELECT});
         metas  = GetVariable3;
         //---------------------------------------------------------------------------------------------------//
         let extranjeros;
         const TASK_QUERY4 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 1 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio);`
-        const GetVariable4 : any  = await persistence.query(TASK_QUERY4, {type: persistence.QueryTypes.GET});
+        const GetVariable4 : any  = await persistence.query(TASK_QUERY4, {type: persistence.QueryTypes.SELECT});
         extranjeros = GetVariable4; 
         //----------------------------------------------------------------------------------------------------//
 
         const TASK_QUERY5 = `SELECT MONTH(P.anio) AS Mes, SUM(valor) AS Valor FROM variables_publicaciones JOIN publicacion P ON id_publicacion = P.publicacion_id WHERE id_variable= 2 AND YEAR(P.anio) = "${req.body.anio}" GROUP BY MONTH(P.anio);`
-        const GetVariable5 : any  = await persistence.query(TASK_QUERY5, {type: persistence.QueryTypes.GET});
+        const GetVariable5 : any  = await persistence.query(TASK_QUERY5, {type: persistence.QueryTypes.SELECT});
 
         for( let i= 0; i<12;  i++ ){
             try {
