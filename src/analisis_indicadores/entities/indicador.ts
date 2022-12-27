@@ -1,13 +1,14 @@
 export class Indicador {
-    public id: string | undefined;
+    public id: string;
     public nombre: string;
-    public descripcion: string;
-    public nombre_eje: string;
+    public eje: string;
+    public NumeroIndicador: number;
 
-    constructor(id: string | undefined, nombre: string, descripcion: string, nombreEje: string) {
+    constructor(id: string, nombre: string, eje: string, numeroIndicador: number) {
         this.id = id;
         this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.nombre_eje = nombreEje;
+        this.eje = eje;
+        this.NumeroIndicador = numeroIndicador;
     }
+
 }

@@ -5,9 +5,9 @@ class IndicadorRepository {
     
     public async findIndicadores(eje: string | undefined): Promise<Indicador[]> {
         let indicadores: any[] = await IndicadorModel.findAll({
-            attributes: ["id", "nombre", "descripcion"],
+            attributes: ["id", "nombre"],
             where: (eje!=undefined) ? {
-                nombre_eje: eje
+                eje
             } : undefined
         })
 
@@ -15,6 +15,19 @@ class IndicadorRepository {
             throw new Error();
         }
         return (<Indicador[]> indicadores);
+    }
+
+    public async findIndicadorById(id: string): Promise<Indicador> {
+        let indicador: any = await IndicadorModel.findOne({
+            where: {
+                id
+            }
+        })
+
+        if (indicador) {
+            return <Indicador> indicador;
+        }
+        throw new Error();
     }
 
 }

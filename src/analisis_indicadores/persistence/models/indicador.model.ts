@@ -15,17 +15,17 @@ IndicadorModel.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    descripcion: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    nombre_eje: {
+    eje: {
         type: DataTypes.STRING,
         allowNull: false,
-        
+    },
+    NumeroIndicador: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
     }
 },{
-    tableName: 'Indicadores',
+    tableName: 'indicadores',
     timestamps: false,
     sequelize: persistence
 })

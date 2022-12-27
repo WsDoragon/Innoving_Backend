@@ -5,21 +5,29 @@ import VariablePublicacionModel from "../models/variablePublicacion.model";
 
 class VariablePublicacionRepository {
     
-    public async newValue(varPub: VariablePublicacion) {
-        const res = await VariablePublicacionModel.create(varPub);
-        console.log('valor asignado')
-        console.log(res.toJSON());
+    public async insertValue(varPub: VariablePublicacion) {
+        const res: any = await VariablePublicacionModel.create(varPub);
+//        console.log(`[VARIABLE PUBLICACION REPOSITORY] ${res.id}`);
+        if (res.id == undefined) {
+            throw new Error();
+        }
+        return;
     }
 
-    public async deleteValuesByIdPub(idPublicacion: number) {
-        const res: number = await VariablePublicacionModel.destroy({
+    public async checkValue(idPublicacion: number, idVariable: number): Promise<boolean> {
+        const res: any = await VariablePublicacionModel.findOne({
             where: {
-                id_publicacion: idPublicacion
+                id_publicacion: idPublicacion,
+                id_variable: idVariable
             }
         })
 
-        console.log(`[DELETE_VALUE_BY_ID_PUB] res: ${res}`);
+        if (res) {
+            return true;
+        }
+        return false;
     }
+
 }
 
 export default new VariablePublicacionRepository();

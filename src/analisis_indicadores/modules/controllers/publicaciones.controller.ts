@@ -1,81 +1,94 @@
 import { Request, Response } from 'express';
-import { Publicacion } from '../../entities/publicacion';
 import { VariablePublicacion } from '../../entities/variablePublicacion';
+import indicadorRepository from '../../persistence/repositories/indicador.repository';
+import publicacionRepository from '../../persistence/repositories/publicacion.repository';
 
 import PublicacionRepository from '../../persistence/repositories/publicacion.repository';
 import variablePublicacionRepository from '../../persistence/repositories/variablePublicacion.repository';
 
 class PublicacionesController {
-    public getPublicaciones(req: Request, res: Response) {
+    public async getPublicaciones(req: Request, res: Response) {
         const { estado, idIndicador } = req.query;
         
         console.log(`[PUBLICACIONES CONTROLLER]: estado: ${estado} / idIndicador: ${idIndicador}`);
     
+        if (estado != undefined && !(parseInt(<string> estado) in [0,1])) {
+            return res.status(400).json({status: false, error: `Estado ${estado} no valido`});
+        }
+        try {
+            if (idIndicador != undefined) {
+                await indicadorRepository.findIndicadorById(<string> idIndicador)
+            }
+        } catch (e) {
+            return res.status(400).json({status: false, error: `ID indicador ${idIndicador} no existe`});
+        }
+
+
         (idIndicador==undefined)
-            ? PublicacionRepository.findPublicacionesByEstado(<string> estado).then(publicaciones => {
+            ? PublicacionRepository.findPublicacionesByEstado(estado==undefined ? undefined : +estado).then(publicaciones => {
                 res.status(200).json({status: true, data: publicaciones});
             }, error => {
                 res.status(404).json({status: false});
             })
             : PublicacionRepository.findPublicacionesByIdIndicador(<string> idIndicador).then(publicaciones => {
+                console.log(`[PUBLICACOINES CONTROLLER] : publicaciones: ${publicaciones}`);
                 res.status(200).json({status: true, data: publicaciones});
             }, error => {
                 res.status(404).json({status: false});
             });
     }
 
-    public editEstadoPublicacion(req: Request, res: Response) {
-        const { idPublicacion } = req.params;
-        const content = req.body;
+    public async setVariables(req: Request, res: Response) {
 
-        console.log(`[idPublicacion]: ${idPublicacion}`);
-        console.log(`[content]: ${content}`);
-            
-        // TODO: validar body
-            
+        const {idPublicacion} = req.params; 
+        try {
+            await publicacionRepository.findPublicacionById(+idPublicacion);
+        } catch (e) {
+            return res.status(400).json({status: false, error: "La publicacion no existe"});
+        }
         /**
-         * content: {
-         *  estado,
-         *  if(estado==='rechazado') comentario
-         *      * eliminar variables
-         * 
-         *  if(estado==='Verificado') indicadores[]
-         *      * borrar comentario
-         * 
-         *  if(estado==='En revision') undefined
-         *      * eliminar variables
+         * body: {
+         *  variables: [id_variables]
          * }
+         * 
+         * variables:
+         * id: 1 descripcion: 'Publicacion con coautor extranjero'),
+         * id: 2 descripcion: 'Publicacion'),
+         * id: 3 descripcion: 'Publicacion ingenieria'),
+         * id: 4 descripcion: 'Publicacion otra disciplina');
          */
-            
-        if (content['estado'] === 'Verificado') {
-            PublicacionRepository.updatePublicacion(+idPublicacion, new Publicacion({...content}))
-            
-            content['indicadores'].map( async (idIndicador: string) => {
-                const idVar: number = (idIndicador==='M25') ? 1 : (idIndicador==='M26') ? 2 : 3;                
-        
-                await variablePublicacionRepository.newValue(    
-                    new VariablePublicacion(idVar, +idPublicacion, 1)
-                );
-        
-        
-            })
-            res.status(202).json({status: true});
-            return;
+        const { variables } = req.body;
+        const ids = [1,2,3,4];
 
-        } 
+//        console.log(`[PUBLICACIONES CONTROLLER]: idPublicacion: ${idPublicacion}`);
+//        console.log(`[PUBLICACIONES CONTROLLER]: variables: ${variables}`)
 
-        PublicacionRepository.updatePublicacion(+idPublicacion, new Publicacion({...content})).then( response => {
-            
-            variablePublicacionRepository.deleteValuesByIdPub(+idPublicacion).then(response => {
-                res.status(200).json({status: true});
-            }, error => res.status(404).json({status:false}))
-            
-        }, error => {
-            console.log(`error ${error}`);
-            res.status(404).json({status:false})
-        });
+        const response = [...ids.filter( async (idVariable) => {
+            if (variables.find((id: number) => idVariable==id) == undefined) {
+ //               console.log(`'id ${idVariable} no encontrado'`)
+                return false;
+            };
+            if (await variablePublicacionRepository.checkValue(+idPublicacion, idVariable)) {
+//                console.log(`[PUBLICACION CONTROLLER]: variable ${idVariable} repetida`)
+                return false;
+            }
 
+            await variablePublicacionRepository.insertValue(
+                new VariablePublicacion(
+                    idVariable,
+                    +idPublicacion,
+                    1
+                )
+            )
+
+            console.log(`asignado id: ${idVariable}`);
+            return true;
+
+        })]
+
+        return res.status(202).json({status: true});
     }
+
 
 }
 

@@ -12,7 +12,7 @@ PublicacionModel.init({
     },
     issn_doi: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     titulo: {
         type: DataTypes.STRING,
@@ -20,35 +20,40 @@ PublicacionModel.init({
     },
     autores: {
         type: DataTypes.STRING,
+        allowNull: true
     },
     revista: {
         type: DataTypes.STRING,
+        allowNull: true
     },
     autores_extranjeros: {
         type: DataTypes.TINYINT,
+        allowNull: true
+    },
+    validado: {
+        type: DataTypes.TINYINT,
+        allowNull: true
     },
     indexacion: {
         type: DataTypes.STRING,
+        allowNull: true
     },
     anio: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
+        allowNull: true
     },
     citaciones: {
         type: DataTypes.STRING,
+        allowNull: true
     },
     clasificacion: {
         type: DataTypes.STRING,
+        allowNull: true
     },
     disciplina: {
         type: DataTypes.STRING,
+        allowNull: true
     },
-    estado: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    comentario: {
-        type: DataTypes.STRING,
-    }
 },{
     tableName: "publicacion",
     timestamps: false,

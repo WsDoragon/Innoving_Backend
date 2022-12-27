@@ -4,7 +4,7 @@ import persistence from "../../../config/persistence";
 
 
 class PublicacionRepository {
-    public async findPublicacionesByEstado(estado: string | undefined): Promise<Publicacion[]> {
+    public async findPublicacionesByEstado(estado: number | undefined): Promise<Publicacion[]> {
         
         console.log(`[PUBLICACIONES_REPOSITORES]: estado: ${estado}`);
         
@@ -14,19 +14,14 @@ class PublicacionRepository {
                 "titulo",
                 "issn_doi",
                 "autores",
-                "revista",
-                "disciplina",
-                "autores_extranjeros",
-                "anio",
-                "comentario"
             ],
             where: (estado!=undefined) ? {
-                estado
+                validado: estado
             } : undefined,
         });
 
         if (publicaciones.length == 0) {
-            throw new Error();
+            return [];
         }
         return (<Publicacion[]> publicaciones);
     }
@@ -39,36 +34,34 @@ class PublicacionRepository {
             SELECT publicacion_id,
             titulo,
             issn_doi,
-            autores,
-            revista,
-            disciplina,
-            autores_extranjeros,
-            anio FROM publicacion
-            JOIN Variables_Publicaciones pv ON pv.id_publicacion=publicacion_id
-            JOIN Variables v ON v.id=pv.id_variable
-            JOIN Indicadores_Variables iv ON iv.id_variable=v.id
-            JOIN Indicadores i ON iv.id_indicador=i.id
+            autores
+            FROM publicacion
+            JOIN Variable_Publicaciones pv ON pv.id_publicacion=publicacion_id
+            JOIN variables v ON v.id=pv.id_variable
+            JOIN indicadores_variables iv ON iv.id_variable=v.id
+            JOIN indicadores i ON iv.id_indicador=i.NumeroIndicador
             WHERE i.id="${idIndicador}"
         `);
 
         if (publicaciones.length == 0) {
-            throw new Error();
+            return [];
         }
         return (<Publicacion[]> publicaciones);
     }
 
+    public async findPublicacionById(id: number): Promise<Publicacion> {
+        const res: any = await PublicacionModel.findByPk(id);
 
-    public async updatePublicacion(id: number, publicacion: Publicacion) {
-        const response: any = await PublicacionModel.update(
-            publicacion,
-            {
-                where: {
-                    publicacion_id: id
-                }
-            });
+        if (res) {
+            console.log(`[PUBLICACION REPOSITORY] ${res.publicacion_id}`);
+            return <Publicacion> res;
+        }
 
-        console.log(`[UPDATE PUBLICACION] response: ${response}`);
+        throw new Error();
     }
+
+
+  
 }
 
 export default new PublicacionRepository();

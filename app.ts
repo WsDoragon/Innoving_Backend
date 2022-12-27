@@ -9,6 +9,11 @@ import rolUsuariosModule from "./src/gestion_usuarios/modules/rol_usuario.module
 import fileRoutes from "./src/gestion_evidencias/routes/file-router";
 import pubRoutes from "./src/gestion_evidencias/routes/pub-router";
 
+import analisisIndicadoresEjesModule from './src/analisis_indicadores/modules/ejes.module';
+import analisisIndicadoresIndicadoresModule from './src/analisis_indicadores/modules/indicadores.module';
+import analisisIndicadoresPublicacionesModule from './src/analisis_indicadores/modules/publicaciones.module';
+
+
 
 //import IndicadorModel from './src/configuracion_proyecto/persistence/models/indicador/Indicador.model';
 import indicadoresModule from './src/configuracion_proyecto/modules/Indicadores/indicadores.module';
@@ -46,6 +51,11 @@ class App {
     //this.server.use(UserModule.routes);
     this.server.use(usuariosModule.routes);
     this.server.use(rolUsuariosModule.routes);
+    
+    // analisis de indicadores
+    this.server.use('/api/ai',analisisIndicadoresEjesModule.routes);
+    this.server.use('/api/ai', analisisIndicadoresIndicadoresModule.routes);
+    this.server.use('/api/ai', analisisIndicadoresPublicacionesModule.routes);
 
     // evidencias
     this.server.use("/api", pubRoutes);
