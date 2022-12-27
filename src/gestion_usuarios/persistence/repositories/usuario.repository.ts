@@ -126,7 +126,7 @@ class UsuarioRepository {
         //fin del hash
 
 
-        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${hashedPass}"`, {type: persistence.QueryTypes.SELECT})
+        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${creds.password}"`, {type: persistence.QueryTypes.SELECT})
         
         if(usuario.length == 0){
             console.log("rut o contraseña erroneos")
@@ -140,11 +140,11 @@ class UsuarioRepository {
             const roles = await persistence.query(`SELECT name from rol JOIN rol_usuario ON id = id_rol WHERE id_rut = "${creds.username}"`, {type: persistence.QueryTypes.SELECT})
             hehe.rut = `${creds.username}`;
             hehe.status = usuario[0].status;
-            //console.log(roles)
+            console.log(roles)
             for (let i = 0; i<roles.length; i++){   
                 hehe.roles[i] =roles[i]["name"];
             }
-            //console.log(hehe)
+            console.log(hehe)
             return hehe
         }
         else{
