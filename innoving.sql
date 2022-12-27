@@ -16,14 +16,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-<<<<<<< HEAD
 
-=======
-drop database innoving;
-create database innoving;
-
-use innoving;
->>>>>>> endpoints listos
 
 CREATE TABLE `archivo` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -84,94 +77,6 @@ CREATE TABLE `indicadores_variables` (
   KEY `id_variable` (`id_variable`),
   CONSTRAINT `indicadores_variables_ibfk_1` FOREIGN KEY (`id_indicador`) REFERENCES `indicadores` (`NumeroIndicador`),
   CONSTRAINT `indicadores_variables_ibfk_2` FOREIGN KEY (`id_variable`) REFERENCES `variables` (`id`)
-<<<<<<< HEAD
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-CREATE TABLE `metas` (
-  `id` int NOT NULL DEFAULT '0',
-  `idindicador` varchar(255) NOT NULL,
-  `fecha` varchar(255) NOT NULL,
-  `cantidad` int NOT NULL,
-  `Peticion` varchar(255) NOT NULL,
-  `Aprobado` int NOT NULL,
-  `antiguaid` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-<<<<<<< HEAD
-CREATE TABLE `publicacion` (
-  `publicacion_id` int NOT NULL AUTO_INCREMENT,
-  `issn_doi` varchar(255) NOT NULL,
-  `titulo` varchar(255) DEFAULT NULL,
-  `autores` varchar(255) DEFAULT NULL,
-  `revista` varchar(255) DEFAULT NULL,
-  `autores_extranjeros` tinyint(1) DEFAULT NULL,
-  `indexacion` varchar(255) DEFAULT NULL,
-  `anio` datetime DEFAULT NULL,
-  `clasificacion` varchar(255) DEFAULT NULL,
-  `disciplina` varchar(255) DEFAULT NULL,
-  `validado` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`publicacion_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8mb3;
-=======
-
-
-CREATE TABLE Variables (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  descripcion VARCHAR(100) NOT NULL
-);
-
-INSERT INTO Variables VALUES 
-  (1,"numero de publicaciones"),
-  (2,"numero de publicaciones de ingenieria"),
-  (3,"numero de publicaciones con coautor extrangero");
-
-CREATE TABLE Indicadores_Variables (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  id_indicador INT(11) NOT NULL,
-  id_variable INT NOT NULL,
-  FOREIGN KEY (id_indicador) REFERENCES indicadores(NumeroIndicador),
-  FOREIGN KEY (id_variable) REFERENCES Variables(id)
-);
-
-create table publicacion(
-    publicacion_id int not null AUTO_INCREMENT primary key,
-	issn_doi varchar(100) not null,
-    titulo varchar(100),
-    autores varchar(100),
-    revista varchar(100),
-    autores_extranjeros TINYINT(1),
-    validado TINYINT(1),
-    indexacion varchar(100), 
-    anio date,
-    clasificacion varchar(100),
-    disciplina varchar(100)
-);
-
-CREATE TABLE Variables_Publicaciones (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  valor INT NOT NULL,
-  id_publicacion INT NOT NULL,
-  id_variable INT ,
-  FOREIGN KEY (id_publicacion) REFERENCES publicacion(publicacion_id),
-  FOREIGN KEY (id_variable) REFERENCES Variables(id)
-);
-
-create table archivo(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    id_fk_pub int(6),
-    id_fk_pro int(6),
-    nombre varchar(255),
-    ruta varchar(255),
-    foreign key(id_fk_pub) references publicacion(`publicacion_id`)
-);
-
-/*
-USUARIOS
-*/
-DROP TABLE IF EXISTS `rol`;
->>>>>>> modificacion a la tabla publicaciones
-=======
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE `metas` (
@@ -199,7 +104,6 @@ CREATE TABLE `publicacion` (
   `validado` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`publicacion_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8mb3;
->>>>>>> endpoints listos
 
 CREATE TABLE `rol` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -1010,25 +914,10 @@ INSERT INTO `variables_publicaciones` (`id`, `valor`, `id_publicacion`, `id_vari
 
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> endpoints listos
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-<<<<<<< HEAD
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-=======
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('a-0','carlitos','torrez','carlitos@gmail.com',"1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75",1,NULL);
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
->>>>>>> modificacion a la tabla publicaciones
-=======
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
->>>>>>> endpoints listos
