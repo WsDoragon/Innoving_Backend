@@ -48,11 +48,11 @@ class UsuarioRepository {
         newUsuario.update({
             token: token
         });
-
+        console.log("CREANDO USUARIO")
         const transporter = nodemailer.createTransport({
-            //host: 'smtp.ethereal.email',
-            //port: 587,
-            service:"gmail",
+            host: 'smtp.ethereal.email',
+            port: 587,
+            //service:"gmail",
             auth:{
                 user: `${process.env.EMAIL_ADDRESS}`,
                 pass: `${process.env.EMAIL_PASSWORD}`,
@@ -72,6 +72,7 @@ class UsuarioRepository {
             if (err){
                 console.error ("Ha ocurrido un error: ", err);
             } else {
+                console.log("CORREO ENVIO")
                 console.log("respuesta:", response);
                 return("email para la recuperacion de contraseña ha sido enviado")
             }

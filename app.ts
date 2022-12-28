@@ -22,18 +22,24 @@ import metasModule from './src/configuracion_proyecto/modules/metas/metas.module
 import ejesModule from './src/configuracion_proyecto/modules/ejes/ejes.module';
 import historialPeticionModule from './src/configuracion_proyecto/modules/historialPeticiones/historialPeticion.module';
 import variableModule from './src/configuracion_proyecto/modules/variables/variable.module';
+
 class App {
   public server;
   private port;
 
+  
+
   constructor() {
     dotenv.config();
+    console.log("soy yo en app:",process.env.DB_HOST, process.env.PORT , process.env.DB_PASSWORD)
     this.port = process.env.PORT;
 
     console.log("initializing");
 
-    this.server = express();
+    
 
+    this.server = express();
+    console.log("soy yo en app:",process.env.DB_HOST, process.env.PORT , process.env.DB_PASSWORD)
     this.middlewares();
     this.routes();
 
