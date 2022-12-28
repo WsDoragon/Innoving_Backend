@@ -17,6 +17,10 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+CREATE DATABASE IF NOT EXISTS innoving;
+
+USE innoving;
+
 CREATE TABLE `archivo` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_fk_pub` int DEFAULT NULL,
@@ -384,29 +388,10 @@ INSERT INTO `rol_usuario` (`id_rut`, `id_rol`) VALUES
 ('20318537-5', 1),
 ('20318537-5', 2),
 ('20318537-5', 3),
-('a', 1),
-('a', 2),
-('a', 3),
-('ab', 1),
-('ab', 2),
-('ab', 3),
-('abc', 2),
-('b', 4),
-('c', 3),
-('d', 2),
-('d', 3),
-('jorge', 4),
 ('juanito', 4);
 
 INSERT INTO `usuario` (`rut`, `nombre`, `apellido`, `correo`, `contraseña`, `status`, `token`) VALUES
-('20318537-5', 'Jorge', 'Gonzalez', 'jorge.gonzalez04@alumnos.uach.cl', 'a', 1, NULL),
-('a', 'test1', 't1', 'test1@test.com', 'a', 1, NULL),
-('ab', 'ab', 'ab', 'ab', 'ab', 1, NULL),
-('abc', 'abc', 'abc', 'abc', 'abc', 1, NULL),
-('b', 'test2', 't2', 'test2@test.com', 'b', 1, NULL),
-('c', 'c', 'c', 'c', 'c', 1, NULL),
-('d', 'd', 'd', 'd', 'd', 0, NULL),
-('jorge', 'jorge', 'jorge', 'jorge', '025julio2000', 1, NULL),
+('20318537-5', 'Jorge', 'Gonzalez', 'jorge.gonzalez04@alumnos.uach.cl', '1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75', 1, NULL),
 ('juanito', 'juanito', 'juanito', 'juanito@gmail.com', '22enero2000', 0, NULL);
 
 INSERT INTO `variables` (`id`, `descripcion`) VALUES
