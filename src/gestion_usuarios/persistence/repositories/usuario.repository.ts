@@ -27,8 +27,8 @@ class UsuarioRepository {
         }
 
     }
-    //aplicar refactoring (nodemailer y jwt)
-    public async newUsuario(Usuario: Usuario): Promise<Usuario> {
+    //Refactoring aplicado (nodemailer y jwt)
+    public async newUsuario(Usuario: Usuario, token:string): Promise<Usuario> {
         //hasheamos
         let testdata = Usuario.contraseña;
         const found = testdata.match(/[0-9]{2}[a-zA-Z]{4,9}[0-9]{4}/g)
@@ -44,41 +44,12 @@ class UsuarioRepository {
         //fin del hash
 
         let newUsuario: any = await UsuarioModel.create(Usuario);
-        //Para enviar solicitud de crear contraseña a usuarios nuevos
-        const token = jwt.sign({id: Usuario.rut}, 'innovame1234', {expiresIn:"1h"});
+
         newUsuario.update({
             token: token
         });
-
-        const transporter = nodemailer.createTransport({
-            //host: 'smtp.ethereal.email',
-            //port: 587,
-            service:"gmail",
-            auth:{
-                user: `${process.env.EMAIL_ADDRESS}`,
-                pass: `${process.env.EMAIL_PASSWORD}`,
-            }
-        });
-
-        const mailOptions={
-            from: `${process.env.EMAIL_FROM}`,
-            to: `${Usuario.correo}`,
-            subject: 'Enlace crear contrasela en tu cuenta de Innoving',
-            text:
-            `su enlace para crear la contraseña es:\nhttp://localhost:3000/resetPass/${Usuario.rut}/${token}`
-            
-        };
-
-        transporter.sendMail(mailOptions, (err, response) => {
-            if (err){
-                console.error ("Ha ocurrido un error: ", err);
-            } else {
-                console.log("respuesta:", response);
-                return("email para la recuperacion de contraseña ha sido enviado")
-            }
-        })
+        
         return <Usuario> newUsuario;
-
     }
 
     public async editUsuario(currentID: string, Usuario: Usuario): Promise<Usuario> {
@@ -96,8 +67,8 @@ class UsuarioRepository {
         let Usuarios: Array<any> = await persistence.query('SELECT * FROM usuario WHERE nombre LIKE "%' + text + '%" OR apellido LIKE "%' + text + '%" GROUP BY rut', {
             model: UsuarioModel,
             mapToModel: true // pass true here if you have any mapped fields
-          });
-          
+        });
+        
         if (Usuarios.length == 0) {
             throw new Error();
         } else {

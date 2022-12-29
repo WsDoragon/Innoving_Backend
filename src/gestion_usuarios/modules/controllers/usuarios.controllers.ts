@@ -100,13 +100,20 @@ class UsuarioController {
 
         }         
         else{
-            let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);        
-            UsuarioRepository.newUsuario(usuario).then(usuarios => {
-                response.status(201).json({status: true, data: usuarios});
+            let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);     
+            
+            let token = jwtController.createToken(usuario.correo);
+            UsuarioRepository.newUsuario(usuario, token).then(usuarios => {
+                mailerRepository.newEmail(usuarios).then( res => {
+                    response.status(201).json({status: true, data: usuarios});
+                }, error => {
+                    response.status(409).json({status: false, error: "Correo no enviado"});
+                })
+                
             }, error => {
                 response.status(409).json({status: false, error: "Usuario ya creado en sistema"});
             });
-    }
+        }
     }
 
 
