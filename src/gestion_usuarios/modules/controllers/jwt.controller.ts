@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 class jwtController {
     public createToken(email:string){
-        const token = jwt.sign({id: email}, `${process.env.JWT_SECRET}`, {expiresIn:"1h"});
+        const token = jwt.sign({id: email}, `${process.env.JWT_SECRET}`, {expiresIn:"5m"});
         return token
     }
 

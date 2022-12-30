@@ -91,6 +91,7 @@ class UsuarioRepository {
         //fin del hash
 
         const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${hashedPass}"`, {type: persistence.QueryTypes.SELECT})
+        console.log("-------------------\nPrueba unitaria CP3: \n", usuario,"\n-------------------")
         
         if(usuario.length == 0){
             console.log("rut o contraseña erroneos")
@@ -279,7 +280,6 @@ class UsuarioRepository {
             const sha512 = require('hash.js/lib/hash/sha/512');
             let hashedPass=sha512().update(password).digest('hex');
             //fin del hash
-
 
             const resetPassword : any = await UsuarioModel.update({contraseña: hashedPass, token:""}, {
                 where:{

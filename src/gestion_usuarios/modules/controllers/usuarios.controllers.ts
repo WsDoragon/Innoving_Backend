@@ -131,7 +131,7 @@ class UsuarioController {
     public loginUsuario(request:Request, response:Response){
         console.log("login: " + Object.keys(request.body));
         UsuarioRepository.loginUsuarios(request.body).then(usuario => {
-            //console.log("loginCF: " + usuario)
+            console.log("Prueba Integracion CP3: \n" + usuario + "-------------------" )
             response.status(201).json(usuario)
         })
     }
