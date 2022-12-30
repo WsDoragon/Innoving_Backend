@@ -7,7 +7,7 @@ class jwtController {
     }
 
     public async validateToken(token:string){
-        jwt.verify(token, `${process.env.JWT_SECRET}`, (err, email) => {
+        return jwt.verify(token, `${process.env.JWT_SECRET}`, (err, email) => {
             if (err){
                 //console.log("Token no valido para consultas, token expirado o incorrecto")
                 throw new Error('Token no valido para consultas, token expirado o incorrecto.')
