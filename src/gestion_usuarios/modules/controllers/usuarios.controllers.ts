@@ -240,9 +240,9 @@ class UsuarioController {
         jwtController.validateToken(request.params.token)
             .then( res => {
                 usuarioRepository.resetPassword(request.params.id, request.params.token, request.body.password, res)
-                    .then(res =>{
-                        //console.log(res)
-                        response.status(200).json({status: true, data: res})
+                    .then(res2 =>{
+                        console.log(`-----------------\nPrueba de integracion CP5: Token validado\n ${{res2}} \n-----------------`)
+                        response.status(200).json({status: true, data: res2})
                     }, error =>{
                         console.log(error.message)
                         response.status(404).json({status:false, a: error.message})

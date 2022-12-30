@@ -268,7 +268,7 @@ class UsuarioRepository {
     //Refactoring aplicado (JWT fuera ahora, con verificacion)
     public async resetPassword(id: string, tokenV: string, password:string, verifyToken:any){
         let regExPassword = /^(?=.*[A-Z])(?=.*[0123456789])[A-Za-z\d@$!%*?&#]{8,16}$/;
-            console.log
+            console.log("-----------------\nPrueba Unitaria CP5:\n", regExPassword.test(password) , "\n-----------------")
         if (!regExPassword.test(password)){
             console.log("contraseña no cumple estandares")
             throw new Error('la contraseña debe tener 8 a 16 caracteres, una mayuscula, 1 numero, 1 minuscula')
