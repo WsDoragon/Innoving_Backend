@@ -15,8 +15,9 @@ class MailerRepository {
         transporter.sendMail(mailOptions, (err: any, response: any) => {
             if (err){
                 console.error ("Ha ocurrido un error: ", err);
+                throw new Error("no se a enviado el correo, error en la validacion o envio.")
             } else {
-                console.log("respuesta:", response);
+                //console.log("respuesta:", response);
                 return("email para la recuperacion de contraseña ha sido enviado")
             }
         })

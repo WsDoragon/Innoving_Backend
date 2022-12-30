@@ -251,6 +251,8 @@ class UsuarioRepository {
             }
         })
 
+        console.log(`--------------\nPrueba unitaria CP4: \n${user} \n--------------`)
+
         if (!user){
             throw new Error()
         }

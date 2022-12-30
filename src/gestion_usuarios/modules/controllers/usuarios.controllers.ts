@@ -209,7 +209,7 @@ class UsuarioController {
 
     public forgotPassword1(request: Request, response: Response) {
 
-        console.log("forgot pasword")
+        console.log("forgot password")
 
         if ((request.body.email === "" )) {
             console.log("No se ingreso email")
@@ -220,9 +220,11 @@ class UsuarioController {
             console.log("Solicitud correcta: " + request.body.email)
             let token = jwtController.createToken(request.body.email)
             UsuarioRepository.forgotPassword(request.body.email, token).then( res =>{
-                mailerRepository.forgotEmail(request.body.email, token, res.rut).then( res => {
+                mailerRepository.forgotEmail(request.body.email, token, res.rut).then( res2 => {
                     response.status(200).json({status: true, data: "solicitud cargada"})
+                    console.log(`--------------\nPrueba Integracion CP4: \n Token: ${token} \n Respuesta forgotPassword: ${res} \n Correo enviado \n--------------`)
                 }, error => {
+                    console.log(error)
                     response.status(404).json({status:false, mensaje:"Error en su consulta, Correo no enviado"})
                 })
                 
