@@ -235,7 +235,7 @@ class UsuarioController {
 
     //Refactoring aplicado
     public resetPassword1(request: Request, response: Response) {
-        jwtController.validateToken(request.body.token)
+        jwtController.validateToken(request.params.token)
             .then( res => {
                 usuarioRepository.resetPassword(request.params.id, request.params.token, request.body.password, res)
                     .then(res =>{
