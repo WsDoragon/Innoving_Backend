@@ -44,6 +44,7 @@ class UsuarioRepository {
         //fin del hash
 
         let newUsuario: any = await UsuarioModel.create(Usuario);
+        console.log("-------------------\nPrueba unitaria CP1: \n", newUsuario,"\n-------------------")
 
         newUsuario.update({
             token: token

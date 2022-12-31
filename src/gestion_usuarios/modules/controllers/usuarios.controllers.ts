@@ -105,6 +105,7 @@ class UsuarioController {
             let token = jwtController.createToken(usuario.correo);
             UsuarioRepository.newUsuario(usuario, token).then(usuarios => {
                 mailerRepository.newEmail(usuarios).then( res => {
+                    console.log("Prueba Integracion CP1: \n"+ usuarios + "\n---------------" + res + "-------------------" )
                     response.status(201).json({status: true, data: usuarios});
                 }, error => {
                     response.status(409).json({status: false, error: "Correo no enviado"});
