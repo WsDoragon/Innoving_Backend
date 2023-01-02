@@ -31,7 +31,7 @@ class UsuarioRepository {
     public async newUsuario(Usuario: Usuario): Promise<Usuario> {
         //hasheamos
         let testdata = Usuario.contraseña;
-        const found = testdata.match(/[0-9]{2}[a-zA-Z]{4,9}[0-9]{4}/g)
+        const found = testdata.match(/[0-9]{2}$[a-zA-Z]{4,9}$[0-9]{4}/g)
         console.log(found);
 
         console.log(testdata);
@@ -301,6 +301,14 @@ class UsuarioRepository {
             host: 'smtp.ethereal.email',
             port: 587,
             //service:"gmail",
+            logger: true,
+            debug: true,
+            tls:{
+                rejectUnauthorized: false,
+                secure:false,
+                ignoreTLS:true,
+                secureProtocol: "TLSv1"
+            },
             auth:{
                 user: `${process.env.EMAIL_ADDRESS}`,
                 pass: `${process.env.EMAIL_PASSWORD}`,
