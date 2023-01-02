@@ -36,7 +36,6 @@ class UsuarioRepository {
 
         console.log(testdata);
         if(!found){
-            console.log("no se encontro algo >:c");
             const sha512 = require('hash.js/lib/hash/sha/512');
             let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
             Usuario.contraseña = hashedPass;
@@ -86,12 +85,20 @@ class UsuarioRepository {
         }
 
         //hasheamos
-        const sha512 = require('hash.js/lib/hash/sha/512');
-        let hashedPass=sha512().update(creds.password).digest('hex');
-        console.log(hashedPass)
+        let testdata = creds.password;
+        const found = testdata.match(/[0-9]{2}[a-zA-Z]{4,9}[0-9]{4}/g)
+        console.log(found);
+
+        console.log(testdata);
+        if(!found){
+            const sha512 = require('hash.js/lib/hash/sha/512');
+            let hashedPass=sha512().update(creds.password).digest('hex');
+            creds.password = hashedPass;
+        }
         //fin del hash
 
-        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${hashedPass}"`, {type: persistence.QueryTypes.SELECT})
+
+        const usuario = await persistence.query(`SELECT * FROM usuario WHERE rut = "${creds.username}" AND contraseña = "${creds.password}"`, {type: persistence.QueryTypes.SELECT})
         console.log("-------------------\nPrueba unitaria CP3: \n", usuario,"\n-------------------")
         
         if(usuario.length == 0){
@@ -106,11 +113,11 @@ class UsuarioRepository {
             const roles = await persistence.query(`SELECT name from rol JOIN rol_usuario ON id = id_rol WHERE id_rut = "${creds.username}"`, {type: persistence.QueryTypes.SELECT})
             hehe.rut = `${creds.username}`;
             hehe.status = usuario[0].status;
-            //console.log(roles)
+            console.log(roles)
             for (let i = 0; i<roles.length; i++){   
                 hehe.roles[i] =roles[i]["name"];
             }
-            //console.log(hehe)
+            console.log(hehe)
             return hehe
         }
         else{
