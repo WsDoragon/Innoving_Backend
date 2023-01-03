@@ -112,13 +112,13 @@ CREATE TABLE `rol` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `rol_usuario` (
   `id_rut` varchar(20) NOT NULL,
   `id_rol` int NOT NULL,
   PRIMARY KEY (`id_rut`,`id_rol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `usuario` (
   `rut` varchar(20) NOT NULL DEFAULT '0',
@@ -130,7 +130,7 @@ CREATE TABLE `usuario` (
   `token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`rut`),
   UNIQUE KEY `rut_UNIQUE` (`rut`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `Variable_Publicaciones` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,

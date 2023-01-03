@@ -119,10 +119,12 @@ class UsuarioController {
 
 
     public editUsuario(request: Request, response: Response){   
-        console.log(request.body.newInfo.roles);
+        //console.log(request.body.newInfo.roles);
+        console.log("----------------------aaaaaaaaaaaaaaaaaaaaa-----------------------------")
+        console.log(request.body)
         let newInfo : any = request.body.newInfo;
         let usuario = new Usuario(newInfo.rut, newInfo.nombre, newInfo.apellido, newInfo.contraseña, newInfo.correo, newInfo.status);
-        UsuarioRepository.editUsuario(request.body.id, usuario).then(usuarios => {
+        UsuarioRepository.editUsuario(request.body.id, usuario, request.body.newInfo.dateStatus).then(usuarios => {
             response.status(201).json({status: true, data: usuarios});
         }, error => {
             response.status(400).json({status: false});

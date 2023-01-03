@@ -52,9 +52,19 @@ class UsuarioRepository {
         return <Usuario> newUsuario;
     }
 
-    public async editUsuario(currentID: string, Usuario: Usuario): Promise<Usuario> {
+    public async editUsuario(currentID: string, Usuario: Usuario, dateStatus:boolean): Promise<Usuario> {
         console.log("EDITAR USUARIO - DEBUG")
         console.log(currentID, Usuario)
+        //solo para proveedores
+        if(dateStatus === true){
+            //hasheamos
+            console.log("entre en el hasheo para editar proveedores y su fecha")
+            const sha512 = require('hash.js/lib/hash/sha/512');
+            let hashedPass=sha512().update(Usuario.contraseña).digest('hex');
+            Usuario.contraseña = hashedPass;
+            
+            //fin del hash
+        }
 
         let editUsuario: any = await persistence.query(`UPDATE usuario SET rut="${Usuario.rut}", nombre='${Usuario.nombre}', apellido='${Usuario.apellido}', correo="${Usuario.correo}", contraseña="${Usuario.contraseña}" WHERE rut = "${currentID}"`
         , {type: persistence.QueryTypes.UPDATE});
