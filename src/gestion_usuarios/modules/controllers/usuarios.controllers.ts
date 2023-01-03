@@ -100,16 +100,22 @@ class UsuarioController {
 
         }         
         else{
-            let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);     
-            
+            let usuario = new Usuario(request.body.rut, request.body.nombre, request.body.apellido, request.body.contraseña, request.body.correo, 1);
+            console.log("-----------------------------------aaaaaaaaaaaaaaaaaaaaaa--------------------------------")
+            console.log (request.body)
             let token = jwtController.createToken(usuario.correo);
             UsuarioRepository.newUsuario(usuario, token).then(usuarios => {
-                mailerRepository.newEmail(usuarios).then( res => {
-                    console.log("Prueba Integracion CP1: \n"+ usuarios + "\n---------------" + res + "-------------------" )
+                if(request.body.emailStatus === false){
                     response.status(201).json({status: true, data: usuarios});
-                }, error => {
-                    response.status(409).json({status: false, error: "Correo no enviado"});
-                })
+                }
+                else{
+                    mailerRepository.newEmail(usuarios).then( res => {
+                        console.log("Prueba Integracion CP1: \n"+ usuarios + "\n---------------" + res + "-------------------" )
+                        response.status(201).json({status: true, data: usuarios});
+                    }, error => {
+                        response.status(409).json({status: false, error: "Correo no enviado"});
+                    })
+                }
                 
             }, error => {
                 response.status(409).json({status: false, error: "Usuario ya creado en sistema"});
