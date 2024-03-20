@@ -4,6 +4,14 @@
 
 # Pasos
 * Importar a MariaDB (MySQL) el archivo “innoving.sql”
+  > ```MySQL
+  > #Crear base de datos
+  > CREATE DATABASE nueva_bbdd;
+  > 
+  > #Importar la base de datos
+  > 
+  > 
+  > ```
 * Añadir archivo “.env” con las siguientes variables:
   ```ENV
   PORT: Puerto a utilizar por el BackEnd.
